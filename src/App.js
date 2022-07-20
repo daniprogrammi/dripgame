@@ -102,8 +102,9 @@ const picList = [{
 
 ]
 
-function Picture({id, src, width, height, coords}) {
+function Picture({id, src, width, height, coords, inCloset}) {
   const style = coords ? { top: `${coords.y - height/2}px`, left: `${coords.x - width/2}px`, position: "fixed"} : {};
+  
   React.useEffect(() => {
     return () => {
       console.log("Using Effect Placeholder"); // Replace with function to crop img???????
@@ -123,9 +124,17 @@ function Picture({id, src, width, height, coords}) {
       };
       
     },
+    end: (item, monitor) => {
+      if (monitor.didDrop() == true) {
+        setOnBoard(true);
+      }
+    }
 
 
   }));
+  if (inCloset == true && onBoard == true ) {
+    return null;
+  }
 
   return (
     <img ref={dragRef} src={src} 
@@ -172,16 +181,14 @@ function DragDrop() {
     <div className='col-md-3'>
     <div className='Pictures'>
       {assets.map(picture => {
-          return <Picture src={picture.src} id={picture.id} width={picture.width} height={picture.height}/>;
+          return <Picture inCloset={true} key={`key${picture.id}`} src={picture.src} id={picture.id} width={picture.width} height={picture.height}/>;
         })}
     </div>
     </div>
     <div className="Board col-md-9" ref={drop} style={{maxWidth:"100%", width: "1500px", height: "1000px", border: "2px red solid", position: "relative"}}>
       <p>Board</p>
 
-      {board.map((picture) => {
-        return <Picture {...picture}/>;
-      })}
+     
       {/* <canvas id="MainCanvas" 
         ref={canvasRef}
         width="600"
