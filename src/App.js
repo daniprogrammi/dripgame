@@ -8,58 +8,20 @@ import face from './assets/Face/cropped_face1.png';
 
 import assets from './js/data';
 
-import { Droppable, DragDropContext, Draggable  } from 'react-beautiful-dnd';
-
 import './App.css';
 import React from 'react';
 
 import { useDrop, useDrag, DragPreviewImage, useDragLayer } from 'react-dnd';
 import { useState, useEffect } from 'react';
 
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Contribute from './components/Contribute';
+import About from './components/About';
+import Artwork from './components/Artwork';
+import Navbar from './components/Navbar';
+import AssetCarousel from './components/AssetCarousel';
+import Board from './components/Board';
 
-
-const Top = () => {
-  const [{ isDragging }, dragRef] = useDrag({
-    type: 'top',
-    item: { },
-    collect: (monitor) => ({
-        isDragging: monitor.isDragging()
-    })
-  })
-
-  return (
-      <div className="tops">
-        <p>
-          Top
-        </p>
-        <img className='tops' ref={dragRef} src={default_shirt1_pose1}></img>
-      </div>
-    );
-}
-
-
-
-export const Basket = () => {
-  const [basket, setBasket] = useState([])
-  const [{ isOver }, dropRef] = useDrop({
-      accept: 'top',
-      drop: (item) => setBasket((basket) => 
-                          !basket.includes(item) ? [...basket, item] : basket),
-      collect: (monitor) => ({
-          isOver: monitor.isOver()
-      })
-  })
-
-  return (
-      <React.Fragment>
-          <Top/>
-          <div className='basket' ref={dropRef}>
-              <Top />
-              {isOver && <div>Drop Here!</div>}
-          </div>
-      </React.Fragment>
-  )
-}
 
 // const originalTop = default_shirt1_pose1;
 
@@ -72,32 +34,37 @@ const picList = [{
   id: 1,
   src: default_shirt1_pose1,
   width: 134,
-  height: 106 
+  height: 106, 
+  category: 'Tops'
 }, 
 {
   id: 2,
   src: face,
   width: 94,
-  height: 80 
+  height: 80, 
+  category: 'Face' 
 },
 {
   id: 3,
   src: default_bottom
   ,  width: 106,
-  height: 116 
+  height: 116 , 
+  category: 'Bottom'
 
 },
 {
   id: 4,
   src: default_body
   ,  width: 161,
-  height: 409 
+  height: 409 , 
+  category: 'Body'
 },
 {
   id: 5,
   src: default_hair1
   ,  width: 141,
-  height: 84 
+  height: 84 , 
+  category: 'Hair'
 }
 
 ]
@@ -177,7 +144,7 @@ function DragDrop() {
   };
 
   return (
-    <>
+    <div className='board-container row flex-nowrap'>
     <div className='col-md-3'>
     <div className='Pictures'>
       {assets.map(picture => {
@@ -188,7 +155,9 @@ function DragDrop() {
     <div className="Board col-md-9" ref={drop} style={{maxWidth:"100%", width: "1500px", height: "1000px", border: "2px red solid", position: "relative"}}>
       <p>Board</p>
 
-     
+      {board.map((picture) => {
+        return <Picture inCloset={false} key={`key${picture.id}`} {...picture}/>;
+      })}
       {/* <canvas id="MainCanvas" 
         ref={canvasRef}
         width="600"
@@ -202,53 +171,31 @@ function DragDrop() {
     
 {/* style={"border:1px solid #000000;"} */}
     </div>
-    </>
-  );
-}
-
-function Board(props) {
-  return (
-    <div className="Board col-md-8" ref={props.dropRef}>
-      <p>Board</p>
-      {/* {board.map((picture) => {
-        return <Picture src={picture.src} id={picture.id}/>;
-      })} */}
-    <canvas id="MainCanvas" 
-      ref={props.canvasRef}
-      width={props.width == null ? "600" : `${props.width}` }
-      height={props.width == null ? "600" : `${props.width}` }
-      style={{border:"1px solid #000000"}}
-      onMouseMove={props.mouseMoveFunc}> 
-    </canvas>
-    <div
-      onMouseMove={props.mouseMoveFunc}
-      style={{padding: '3rem', backgroundColor: 'lightgray'}}>
     </div>
-  </div>
   );
 }
 
 function App() {
   return (
-    <div className='App row flex-nowrap'>
-      {/* <Top /> */}
-      <DragDrop />
-
-    </div>
-  );
-}
-
-function Collection(){
-  return (
-    <div className='clothing-collection'>
-      {/* Sections of clothing for the game */}
-
-    </div>
+    <BrowserRouter>
+      <div className='App'>
+        <header className='App-header'>
+          <Navbar></Navbar>
+        </header>
+        <AssetCarousel category="Test" carouselItems={picList}></AssetCarousel>
+      </div>
+      <Routes>
+        <Route exact path='/' element={<Board/>}/>
+        <Route path='/about' element={<About/>}/>
+        <Route path='/contribute' element={<Contribute/>}/>
+        <Route path='/artwork' element={<Artwork/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
 export default App;
-export { Top, DragDrop, Picture, originalImg};
+export { DragDrop};
 
 // ???????????????????????
 // <DragDropContext onDragEnd={(param) => {

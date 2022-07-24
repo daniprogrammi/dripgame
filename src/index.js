@@ -10,15 +10,12 @@ import App from './App';
 import { Top } from './App';
 import reportWebVitals from './reportWebVitals';
 
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <div className='row'>
       <DndProvider backend={HTML5Backend}>
         <App />
       </DndProvider>
-      </div>
   </React.StrictMode>
 );
 
