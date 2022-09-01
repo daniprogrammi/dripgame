@@ -25,7 +25,7 @@ async function createAsset(assetCategory, assetLabel, assetFile, contributor, as
         "category": assetCategory,
         "label": assetLabel,
         "file": assetFile,
-        "artist": artist,
+        "contributor": contributor,
         "approved": false,
         "published": false
     }
@@ -50,7 +50,7 @@ async function approveAsset(assetId) {
         "approved": true
     };
 
-    let updatedObj = await assetsDB.updateOne({'id': assetId}, { $set: assetApproved });
+    let updatedObj = await assetsDB.updateOne({'_id': assetId}, { $set: assetApproved });
     if (updatedObj['modifiedCount'] !== 1)
         throw `Could not find asset with id: ${assetId}`;
 
@@ -59,7 +59,7 @@ async function approveAsset(assetId) {
 
 async function getAssetByID(assetId){
     let assetsDB = await assets();
-    let asset = await assetsDB.findOne({'id': assetId});
+    let asset = await assetsDB.findOne({'_id': assetId});
     if (!asset) 
         throw `Error: could not find asset with id: ${assetId}`;
 
@@ -82,7 +82,7 @@ async function getAssetsByCategory(assetCategory){
     let foundAssets = await assetsDB.find({'category': assetCategory});
     if (!foundAssets)
         throw `Error: could not find assets under category ${assetCategory}`;
-    return;
+    return foundAssets;
 }
 
 async function getAssetByFilename(assetFile) {

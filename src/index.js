@@ -3,11 +3,10 @@ import React from 'react';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import ReactDOM from 'react-dom/client';
-import * as ReactDOMClient from 'react-dom/client';
+// import * as ReactDOMClient from 'react-dom/client';
 
 import './index.css';
-import App from './App';
-import { Top } from './App';
+import App from './containers/App/App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
