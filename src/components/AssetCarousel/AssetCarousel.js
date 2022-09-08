@@ -1,7 +1,8 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import Asset from '../Asset/Asset';
+//import Asset from '../Asset/Asset';
+import CanvasAsset from '../Canvas/CanvasAsset';
 
 export default function AssetCarousel(props){
     const [index, setIndex] = useState(0);
@@ -14,7 +15,7 @@ export default function AssetCarousel(props){
     props.carouselItems.map(item => {
             return (
                 <Carousel.Item className={`carousel-item-${item.category}`} >
-                        <Asset inCloset={true} key={`key${item.id}`} src={item.src} id={item.id} width={item.width} height={item.height}></Asset>
+                        <CanvasAsset inCloset={true} key={`key${item.id}`} src={item.src} id={item.id} width={item.width} height={item.height}></CanvasAsset>
                     <Carousel.Caption>
                         <h4>{item.caption}</h4>
                     </Carousel.Caption>
