@@ -2,6 +2,9 @@
   "name": "dripgame",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://github.com/Danicodes/dripgame",
+  "email": "email@email.email",
+  "license": "MIT",
   "dependencies": {
     "assert": "^2.0.0",
     "fabric": "^5.2.4",
