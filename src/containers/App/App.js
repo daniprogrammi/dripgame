@@ -18,6 +18,7 @@ import Artwork from '../Artwork/Artwork';
 import Navbar from '../../components/Navbar/Navbar';
 import Admin from '../Admin/Admin';
 import Board from '../../components/Board/Board';
+import Canvas from '../../components/Canvas/Canvas';
 
 
 // const originalTop = default_shirt1_pose1;
@@ -121,7 +122,7 @@ function App() {
         </header>
       
         <Routes>
-          <Route exact path='/' element={<Board/>}/>
+          <Route exact path='/' element={<><Canvas></Canvas></>}/>
           <Route path='/about' element={<About/>}/>
           <Route path='/contribute' element={<Contribute/>}/>
           <Route path='/artwork' element={<Artwork/>}/>

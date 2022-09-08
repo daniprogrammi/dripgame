@@ -7,7 +7,7 @@ li>.active {
 .navbar {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 1.2rem;
-    height: 80px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,8 +16,11 @@ li>.active {
 .navbar li {
     list-style-type: none;
     float: left;
+}
+
+.navbar li a {
     text-decoration: none;
-    
+    font-size: large;
 }
 
 .navbar li:hover {
