@@ -12,7 +12,7 @@ import default_body from '../../assets/Body/cropped_pose1.png';
 import default_shirt1_pose1 from '../../assets/Tops/cropped_shirt1_pose1.png';
 import default_bottom from '../../assets/Bottoms/cropped_pose1.png';
 import face from '../../assets/Face/cropped_face1.png';
-
+// todo: limit the amount of stuff that can be on the canvas at once thnx
 const picList = [{
   id: 1,
   src: default_shirt1_pose1,
