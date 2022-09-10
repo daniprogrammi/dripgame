@@ -1,5 +1,5 @@
 import { useEffect, useState} from "react";
-import Image from "./Image";
+import GalleryImage from "./GalleryImage";
 import fetchAllAssets from "../../services/fetchAllAssets";
 
 function fetchAssets() {
@@ -33,10 +33,10 @@ export default function Gallery() {
             { assets && assets.map((assetObj) => {
                 return ( 
                 <div className="single-image">
-                <Image imgSource={assetObj.file} 
+                <GalleryImage imgSource={assetObj.file} 
                        imgWidth={assetObj.width ? assetObj.width : 500} 
                        imgHeight={assetObj.height ? assetObj.height: 500}>
-                </Image>
+                </GalleryImage>
                 <div className="single-image-info">
                     <p> {assetObj['label']} by {assetObj['contributorUsername']} </p>
                 </div>
