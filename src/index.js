@@ -1,20 +1,21 @@
 import React from 'react';
-
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 import ReactDOM from 'react-dom/client';
-// import * as ReactDOMClient from 'react-dom/client';
+import { Auth0Provider } from '@auth0/auth0-react';
 
 import './index.css';
 import App from './containers/App/App';
 import reportWebVitals from './reportWebVitals';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-      <DndProvider backend={HTML5Backend}>
-        <App />
-      </DndProvider>
+      <Auth0Provider domain={process.env.REACT_APP_AUTH_DOMAIN}
+      clientId={process.env.REACT_APP_CLIENTID}
+      redirectUri={`http://localhost:3000/contribute`}>
+       <App />
+      </Auth0Provider>
+
   </React.StrictMode>
 );
 
