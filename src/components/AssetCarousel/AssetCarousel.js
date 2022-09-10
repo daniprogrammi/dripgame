@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 //import Asset from '../Asset/Asset';
 import CanvasAsset from '../Canvas/CanvasAsset';
+import Drawer from './Drawer';
 
 export default function AssetCarousel(props){
     const [index, setIndex] = useState(0);
@@ -23,18 +24,17 @@ export default function AssetCarousel(props){
             );
         } 
     );
-
     return (
-        <Carousel slide={false} controls={true} className="carousel-content" activeIndex={index} onSelect={handleSelect} children={carouselItems}>
+        <Drawer >
+            <Carousel slide={false} controls={true} className="carousel-content" activeIndex={index} onSelect={handleSelect} children={carouselItems}>
 
-            {/* <Carousel.Item>
-                 <img className="card-img-top" src="https://tr.rbxcdn.com/b3b3a4e014a6ea6650f18662ec2fd8cd/420/420/Image/Png"/>
-                <Carousel.Caption>
-                    <h4>Card 3</h4>
-                </Carousel.Caption>
-            </Carousel.Item> */}
-
-        </Carousel>
-   
+                {/* <Carousel.Item>
+                    <img className="card-img-top" src="https://tr.rbxcdn.com/b3b3a4e014a6ea6650f18662ec2fd8cd/420/420/Image/Png"/>
+                    <Carousel.Caption>
+                        <h4>Card 3</h4>
+                    </Carousel.Caption>
+                </Carousel.Item> */}
+            </Carousel>
+        </Drawer>
     );
 }
