@@ -1,5 +1,10 @@
+@use '../../style' as *;
+
 .App {
   text-align: center;
+  background-color: $background-color;
+  color: $font-color;
+  font-size: $medium-font-size;
 }
 
 .App-logo {
@@ -14,19 +19,16 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 20vh;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: $font-color;
+  padding-bottom: $div-padding-top;
 }
 
-.App-link {
-  color: #61dafb;
-}
 
 @keyframes App-logo-spin {
   from {
@@ -43,4 +45,8 @@
 
 .carousel-inner {
   margin: auto;
+}
+
+.containerTitle {
+  padding-bottom: 5vh;
 }

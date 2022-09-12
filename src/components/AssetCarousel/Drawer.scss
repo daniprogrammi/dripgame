@@ -1,0 +1,47 @@
+@use '../../style/' as *;
+
+.assetDrawer {
+    width: auto;
+    height: auto;
+    /* transform: translateX(100%);
+    transition: transform 0.3 ease-in-out; */
+
+/* Let width and height take the size of the carousel when I figure out how to stop it from changing sizes based on the input image */
+    button {
+        height: auto;
+        width: auto;
+        padding: 20px 10px;
+        border-width: $standard-width;
+        border-style: solid;
+        border-color: rgba($background-color, 0.8);
+        color: $background-color;
+        font-size: $medium-font-size;
+    }
+
+    .drawerBtnOpen {
+        background-color: rgba($highlight-color-pink, 0.5);
+    }
+
+    .drawerBtnClose {
+        background-color: rgba(white, 0.9);
+    }
+
+
+}
+
+.assetDrawer.carousel-content {
+    /* transform: translateX(100px);
+    transition-duration: 8s; */
+    animation-duration: 8s;
+    animation-name: slidein;
+}
+
+@keyframes slidein {
+    from {
+        margin-top: -10%;
+    }
+
+    to {
+        margin-top: 0%;
+    }
+}

@@ -44,6 +44,7 @@
     ]
   },
   "devDependencies": {
-    "@types/fabric": "^4.5.12"
+    "@types/fabric": "^4.5.12",
+    "sass": "^1.54.9"
   }
 }

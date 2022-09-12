@@ -1,0 +1,20 @@
+@use '../../style/' as *;
+
+.aboutContainer {
+    background-color: $background-color;
+    color: $font-color;
+    
+    h3 {
+        font-size: $large-font-size;
+    }
+
+    p {
+        font-size: $medium-font-size;
+    }
+    
+    .row {
+        padding-top: $padding-top;   
+        padding-bottom: $padding-top;   
+    }
+
+}

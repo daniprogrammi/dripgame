@@ -1,0 +1,48 @@
+@use '../../style/' as *;
+
+.canvasDiv {
+
+    z-index: 5;
+    padding-left: $div-padding-left;
+    padding-right: $div-padding-left;
+    width: 100%;
+
+    display: flex;
+    flex-wrap: wrap;
+    background-color: $background-color;
+    position: absolute;
+    justify-content: center;
+    order: -1;
+
+    h3 {
+        color: $font-color;
+        font-family: $normal-font, monospace;
+        font-size: $very-large-font-size;
+    }
+
+    .mainCanvas {
+        border-radius: .5%;
+        border-width: $div-padding-left;
+        border-style: solid;
+        border-color: $highlight-color-pink;
+    }
+
+    .assetCarouselDiv {
+        width: auto;
+        AssetCarousel {
+            background-color: $highlight-color-pink;
+        }       
+    }
+
+    .row {
+        flex-basis: 100%;
+        justify-content: center;
+    }
+
+    .canvas-container {
+        justify-content: center;
+        position: relative;
+    }
+
+
+}

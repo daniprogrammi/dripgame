@@ -1,0 +1,42 @@
+/* Currently active navigation tab */
+@use '../../style' as *;
+
+.navbar {
+    font-family: $normal-font;
+    font-size: $medium-font-size;
+    height: 50px;
+    display: inline;
+    justify-content: center;
+    align-items: center;
+
+    li {
+        list-style-type: none;
+        float: left;
+
+        a {
+           display: block;
+           text-decoration-line: none;
+           padding: $padding-top $padding-left;
+           font-size: $medium-font-size;
+           color: $font-color;
+        }
+    }
+
+    a.active {
+        background-color: $secondary-bg-color;
+        color: rgba($font-color, 0.7);
+        font-weight: lighter;
+    }
+
+    li:hover {
+        background-color: rgba($secondary-bg-color, 0.5);
+    }
+    >ul {
+        display: grid;
+        grid-template-columns: repeat(5, auto);
+        list-style: none;
+        text-align: center;
+        width: 80vw;
+    }
+}
+

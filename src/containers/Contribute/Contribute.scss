@@ -1,0 +1,8 @@
+@use '../../style/' as *;
+
+.contribution-form-div {
+    background-color: $secondary-bg-color;
+    display: flex;
+    flex-wrap: wrap;
+
+}

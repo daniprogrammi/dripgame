@@ -1,8 +1,11 @@
 import { NavLink } from 'react-router-dom';
-import './Navbar.css';
+import './Navbar.scss';
+import Logo from '../Logo/Logo';
 
 export default function Navbar(){
     return (
+        <div className='topbarContent'>
+            <Logo></Logo>
         <nav className='navbar'>
             <ul>
                 <li>
@@ -22,5 +25,6 @@ export default function Navbar(){
                 </li>
             </ul>
         </nav>
+        </div>
     );
 }
