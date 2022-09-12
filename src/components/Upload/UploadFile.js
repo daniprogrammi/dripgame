@@ -62,7 +62,7 @@ export default function UploadFile({username}) {
             "category": inputfileObj.assetCategory,
             "label": inputfileObj.assetLabel,
             "file": fileUrl,
-            "twitchUsername": inputfileObj.contributorName, // TODO: username will come from auth
+            "twitchUsername": username,
             "approved": false,
             "published": false,
             "assetExtra" : { 
@@ -77,49 +77,40 @@ export default function UploadFile({username}) {
             // await createAsset(assetCategory, assetLabel, fileUrl, contributorName);
         // }       
     }
-   
+    const categoryOptions = ['top', 'bottom', 'suit', 'shoe', 'accessories', 'hair', 'face', 'model', 'backdrop'];
     if (fileUrl !== null){
 
         return (
         <div className='contribution-form-div'>
-        <h3>Give more info about this upload:</h3>
-        <form id='contributionForm' onSubmit={e => submitUploadForm(e)}>
-            <div className="contribution-form-asset-categories">
-            <input type='radio' id="asset-category-tops" name="asset-category" value={inputfileObj.assetCategory} onChange={e => setInputFileObj({...inputfileObj, 'assetCategory': "top"})}></input>
-            <label htmlFor="asset-category-tops">Tops</label>
-            
-            <input type='radio' id='asset-category-suit' name="asset-category" value={inputfileObj.assetCategory} onChange={e => setInputFileObj({...inputfileObj, 'assetCategory': "bottom"})}></input> 
-            <label htmlFor="asset-category-bottom">Bottoms</label>
-            
-            <input type='radio' id='asset-category-suit' name="asset-category" value={inputfileObj.assetCategory} onChange={e => setInputFileObj({...inputfileObj, 'assetCategory': "suit"})}></input> 
-            <label htmlFor="asset-category-suit">Suit</label>
-            
-            <input type='radio' id='asset-category-shoes' name="asset-category" value={inputfileObj.assetCategory} onChange={e => setInputFileObj({...inputfileObj, 'assetCategory': "shoe"})}></input> 
-            <label htmlFor="asset-category-shoes">Shoes</label>
-            
-            <input type='radio' id='asset-category-model' name="asset-category" value={inputfileObj.assetCategory} onChange={e => setInputFileObj({...inputfileObj, 'assetCategory': "model"})}></input> 
-            <label htmlFor="asset-category-model">Model</label>
-            
-            <input type='radio' id='asset-category-hair' name="asset-category" value={inputfileObj.assetCategory} onChange={e => setInputFileObj({...inputfileObj, 'assetCategory': "hair"})}></input> 
-            <label htmlFor="asset-category-Hair">Hair</label>
-            
-            <input type='radio' id='asset-category-face'  name="asset-category" value={inputfileObj.assetCategory} onChange={e => setInputFileObj({...inputfileObj, 'assetCategory': "face"})}></input>
-            <label htmlFor="asset-category-face">Face</label>
-            
-            <input type='radio' id='asset-catgory-backdrop' name="asset-category" value={inputfileObj.assetCategory} onChange={e => setInputFileObj({...inputfileObj, 'assetCategory': "backdrop"})}></input>
-            <label htmlFor="asset-category-backdrop">Backdrop</label>
+            <div className="row">
+                <h4>Hey {username}, give us more info about this upload:</h4>
             </div>
-            <div>
-                <label htmlFor="asset-label">Name for this asset:</label>
-                <input type="text" value={inputfileObj.assetLabel} id="asset-label" onChange={e => setInputFileObj({...inputfileObj, 'assetLabel': `${e.target.value}`})} />
-                <label htmlFor="asset-contributor">TwitchUsername:</label>
-                {/* Contributor name should be taken directly from the authenticated user */}
-                <input type="text" value={username} id="asset-contributor"/>
-                {/* Eventually will include socials as well */}
+            <form id='contributionForm' onSubmit={e => submitUploadForm(e)}>
+                <div className="row">
+                    <div className="contribution-form-asset-categories">
+                        {/* TODO: FOR LOOP IT -- also add accessories to category*/}  
+                        <label htmlFor="asset-category">
+                            Asset category:
+                        </label>
+
+                        <select id='asset-category' name='asset-category' value={inputfileObj.assetCategory} onChange={e => setInputFileObj({...inputfileObj, 'assetCategory': e.target.value})}>
+                            {categoryOptions.map(category => {
+                                return (
+                                    <option value={`${category}`}>{category[0].toUpperCase() + category.slice(1)}</option>
+                                );
+                            })}
+                        </select>
+                    </div>
+                </div>
+
+                <div className='row'>
+                    <label htmlFor="asset-label">Name for this asset:</label>
+                    <input type="text" value={inputfileObj.assetLabel} id="asset-label" onChange={e => setInputFileObj({...inputfileObj, 'assetLabel': `${e.target.value}`})} />
+                    {/* Eventually will include socials as well */}
                 {/* <input type="text" name="asset-contributor-other-things-idk-i-forget" id="" /> */}
                 </div>
 
-            <div>
+            <div className='row'>
                 <p>Submit any extra info about this asset:</p>
                 <textarea name="assetExtra" id="assetExtra-area" cols="30" rows="10"  placeholder='example(brand: gucci, material: silk)'
                      onChange={e => setAssetExtra({...assetExtra, ...parseAssetExtra(e.target.value)})}>
@@ -130,7 +121,7 @@ export default function UploadFile({username}) {
             <input type="submit" value="Submit"/>
         </form>
         </div>
-        )
+        );
     }
     
     console.log(`This user: ` + username);
@@ -138,15 +129,19 @@ export default function UploadFile({username}) {
     if (progress !== null ) return <>File uploading... {progress}%</>;
 
     return (
-        <>
+        <div className='uploadFile'>
         {/* <input type="file"></input> */}
-        <input type="file" 
+        <label for="artUpload" class="form-label">Add artwork here</label>
+        <input 
+            className='customFileInput form-control-lg'
+            id='artUpload'
+            type="file" 
             onChange={upload.createFileInputHandler({
                 onBegin: ({cancel}) => setProgress(0),
                 onProgress: ({ progress }) => setProgress(progress),
                 onUploaded: ({ fileUrl }) => setFileUrl(fileUrl),
                 onError: (error) => setError(error)
             })} />
-        </>
+        </div>
     )
 }
