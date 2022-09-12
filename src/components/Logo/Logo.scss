@@ -1,0 +1,25 @@
+@use '../../style/constants.scss';
+
+.logoImage { 
+    width: 75px;
+    height: 75px;
+}
+
+.logoDiv {
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    display: inline;
+    float: left;
+
+    a {
+        text-decoration-line: none;
+        padding: 50px 50px;
+    }
+
+    p {
+        font-size: constants.$large-font-size;
+        font-family: constants.$bold-font;
+        color: constants.$font-color;
+    }
+}
