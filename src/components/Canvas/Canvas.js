@@ -1,6 +1,5 @@
 import { useEffect, useCallback, useState, useRef, useContext, createContext } from 'react';
 import { fabric } from 'fabric';
-import { useDrop } from 'react-dnd';
 
 import AssetCarousel from '../AssetCarousel/AssetCarousel.js';
 import default_hair1 from '../../assets/Hair/cropped_hair1.png';
@@ -9,6 +8,7 @@ import default_shirt1_pose1 from '../../assets/Tops/cropped_shirt1_pose1.png';
 import default_bottom from '../../assets/Bottoms/cropped_pose1.png';
 import face from '../../assets/Face/cropped_face1.png';
 import { notDeepEqual } from 'assert';
+import './Canvas.scss';
 
 const picList = [{
   id: 1,
@@ -46,45 +46,6 @@ const picList = [{
   height: 84 , 
   category: 'Hair'
 }]
-
-const AssetContext = createContext({assets: []});
-
-const AssetState = ({children}) => {
-    const [assetState, setAssetState] = useState({
-        assets: [],
-        addAsset: (newAsset) => {
-            setAssetState((oldAssets) => {
-                let returnAssets = [];
-
-                if (!oldAssets.assets.find((element) => newAsset.id === element.id)) {
-                    returnAssets.push(newAsset);
-                    returnAssets.push(...oldAssets.assets);
-                } else {
-                    let newElem;
-                    for (let element of oldAssets.assets) {
-                        if (element.id === newAsset.id) {
-                            // May be unnecessary
-                            newElem = { id: element.id, src: element.src, width: element.width, height: element.height, coords: newAsset.coords }
-                            break;
-                        }
-                    };
-                    returnAssets.push(...oldAssets.assets.filter((item) => item !== newAsset.id ));
-                    returnAssets.push(newElem);
-                }
-
-                return {
-                    ...oldAssets,
-                    assets: returnAssets
-                };
-            });
-        }
-    });
-    return (
-    <AssetContext.Provider value={assetState}>
-        {children}
-        </AssetContext.Provider>
-    );
-}
 
 export function useCanvas(init, saveState = true) {
     const elementRef = useRef(null); // Ref to the canvas element
@@ -139,21 +100,7 @@ export function useCanvas(init, saveState = true) {
         
 }
 
-function useUnload(func) {
-    const unloadingRef = useRef(func);
-
-    useEffect(()=>{
-        const onUnload = unloadingRef.current;
-        window.addEventListener('beforeunload', onUnload); 
-        return () => {
-            window.removeEventListener('beforeunload', onUnload);
-        };
-    }, [unloadingRef]);
-}
-
 export default function Canvas() {
-    // TODO canvas can't unload properly for some reason
-
     const [canvas, setCanvasRef] = useCanvas(canvas => {
         canvas.on('drop', e => {
             let event = e.e;
@@ -187,28 +134,8 @@ export default function Canvas() {
             }
             canvas.add(image);
         });
-    }
-        // Undo function:
-        // canvas.item(canvas.getObjects().length-1);
-        // canvas.remove(object)
-        // May be useful to look at for an unload canvas function
-        // canvas.dispose() -- 
-       console.log(`Current objects: ${JSON.stringify(canvas.getObjects())}`);        
-    });
-
-
-    });
-
-    const unloadFunction = (e) => {
-        e.preventDefault();
-        canvas.dispose();
-        setCanvasRef(null);
-    }
-
-    // useEffect(() => {
-    //     window.addEventListener('beforeunload', unloadFunction);
-    //     return () => window.removeEventListener('beforeunload', unloadFunction);
-    // })
+        }});
+        });
 
     const myRef = useRef(null);
     useEffect(() => {
@@ -217,18 +144,28 @@ export default function Canvas() {
 
    
     return (
-        <div>  
-        <div className='col-md-9'>
-            <div className='assetCarouselDiv' style={{backgroundColor: "lightblue"}}>
-              {/* TODO: We'll have multiple carousels for each category of closet item */}
-              <AssetCarousel category="Test" carouselItems={picList}></AssetCarousel>
+        <div className='canvasDiv'>
+            <div className='row'>
+                <div className='col-md-12'>
+                     <h3 className="pageContentTitle">Canvas</h3>  
+                </div>
+            </div>
+
+            <div className='row'>
+                <div className='col-md-3 carousel-side'>
+                    <div className='assetCarouselDiv'>
+                    {/* TODO: We'll have multiple carousels for each category of closet item */}
+                    <AssetCarousel category="Test" carouselItems={picList}></AssetCarousel>
+                    </div>
+                </div>
+                <div className='col-md-9'>
+                    <canvas 
+                        className='mainCanvas'
+                        width={1260}
+                        height={720}
+                        ref={myRef}/>
             </div>
         </div>
-        <canvas
-            width={1500}
-            height={1000}
-            ref={myRef}
-            style={{border: "1px solid red"}}/>
-        </div>
+            </div>
     )
 }

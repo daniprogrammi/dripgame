@@ -8,7 +8,7 @@ import Artwork from '../Artwork/Artwork';
 import Navbar from '../../components/Navbar/Navbar';
 import Admin from '../Admin/Admin';
 import Canvas from '../../components/Canvas/Canvas';
-
+import Footer from '../../components/Footer/Footer';
 function App() {
   return (
     <BrowserRouter>

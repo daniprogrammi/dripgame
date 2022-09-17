@@ -5,7 +5,8 @@ import createContributor  from '../../services/createContributor';
 import  fetchContributorByUsername  from '../../services/fetchContributorByUsername';
 import fetchAssetByUrl from '../../services/fetchAssetByUrl';
 
-import { uploadAsset } from '../../services/uploadAsset'
+import uploadAsset  from '../../services/uploadAsset';
+import UploadForm from '../UploadForm/UploadForm';
 
 
 const upload = new Upload({ apiKey: "free" });
@@ -77,7 +78,7 @@ export default function UploadFile({username}) {
             // await createAsset(assetCategory, assetLabel, fileUrl, contributorName);
         // }       
     }
-    const categoryOptions = ['top', 'bottom', 'suit', 'shoe', 'accessories', 'hair', 'face', 'model', 'backdrop'];
+    const categoryOptions = ['tops', 'bottoms', 'sets', 'shoes', 'accessories', 'hair', 'face', 'poses', 'backdrop'];
     if (fileUrl !== null){
 
         return (
@@ -88,7 +89,6 @@ export default function UploadFile({username}) {
             <form id='contributionForm' onSubmit={e => submitUploadForm(e)}>
                 <div className="row">
                     <div className="contribution-form-asset-categories">
-                        {/* TODO: FOR LOOP IT -- also add accessories to category*/}  
                         <label htmlFor="asset-category">
                             Asset category:
                         </label>
@@ -116,7 +116,6 @@ export default function UploadFile({username}) {
                      onChange={e => setAssetExtra({...assetExtra, ...parseAssetExtra(e.target.value)})}>
                 </textarea>
             </div>
-
             
             <input type="submit" value="Submit"/>
         </form>

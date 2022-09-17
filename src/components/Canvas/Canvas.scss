@@ -45,4 +45,28 @@
     }
 
 
+    .carousel-side {
+        background-color: $highlight-color-pink;
+        .assetCarouselDiv {
+            padding-top: $padding-top;
+            padding-bottom: $padding-top;
+
+
+            .drawerBtnOpen {
+                background-color: $font-color;
+                border: none;
+                color: $background-color;
+                padding: $padding-left $padding-top;
+                display: inline-block;
+                font-size: 16px;
+                text-decoration: none;
+
+                // Change position when open to 'center'
+            }
+
+            .drawerBtnClose {
+                background-color: $font-color;
+            }
+        }
+    }
 }

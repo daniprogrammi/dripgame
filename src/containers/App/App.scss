@@ -5,6 +5,12 @@
   background-color: $background-color;
   color: $font-color;
   font-size: $medium-font-size;
+  font-family: $normal-font, 'Lucida Console';
+  height: 100%;
+  width: 100%;
+  border: 20px solid $background-color;
+  border-style: solid;
+
 }
 
 .App-logo {
@@ -22,11 +28,13 @@
   min-height: 10vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items:  center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: $font-color;
   padding-bottom: $div-padding-top;
+  padding-top: $padding-top;
+  background-color: $secondary-bg-color;
 }
 
 
@@ -50,3 +58,4 @@
 .containerTitle {
   padding-bottom: 5vh;
 }
+

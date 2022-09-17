@@ -5,7 +5,7 @@ export default async function createContributor(contributorObject) {
             'Content-Type': 'application/json',
         },
         mode: 'cors',
-        body: JSON.stringify(contributorObject)
+        body: JSON.stringify({data: contributorObject})
     });
 
     if (response.ok) {

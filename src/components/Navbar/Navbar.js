@@ -7,6 +7,7 @@ export default function Navbar(){
         <div className='topbarContent'>
             <Logo></Logo>
         <nav className='navbar'>
+            <div className="navbar-links">
             <ul>
                 <li>
                     <NavLink exact to='/' activeClassName='activeNav'>Home</NavLink>
@@ -23,7 +24,7 @@ export default function Navbar(){
                 <li>
                     <NavLink exact to='/admin' activeClassName='activeNav'>Admin</NavLink>
                 </li>
-            </ul>
+            </ul></div>
         </nav>
         </div>
     );

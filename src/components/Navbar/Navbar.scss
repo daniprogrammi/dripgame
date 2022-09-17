@@ -9,6 +9,12 @@
     justify-content: center;
     align-items: center;
 
+    .navbar-links {
+        background-color: $medium-color;
+        width: fit-content;
+        height: 10vh;
+    }
+
     li {
         list-style-type: none;
         float: left;
@@ -23,13 +29,13 @@
     }
 
     a.active {
-        background-color: $secondary-bg-color;
+        background-color: rgba($secondary-bg-color, 0.5);
         color: rgba($font-color, 0.7);
         font-weight: lighter;
     }
 
     li:hover {
-        background-color: rgba($secondary-bg-color, 0.5);
+        background-color: rgba($medium-color, 0.5);
     }
     >ul {
         display: grid;
@@ -38,5 +44,7 @@
         text-align: center;
         width: 80vw;
     }
+
+    border-bottom: 5px solid rgba(23, 2, 37, 0.865);
 }
 
