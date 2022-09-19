@@ -2,30 +2,30 @@ import { NavLink } from 'react-router-dom';
 import './Navbar.scss';
 import Logo from '../Logo/Logo';
 
-export default function Navbar(){
+export default function Navbar() {
     return (
-        <div className='topbarContent'>
+        <div >
             <Logo></Logo>
-        <nav className='navbar'>
-            <div className="navbar-links">
-            <ul>
-                <li>
-                    <NavLink exact to='/' activeClassName='activeNav'>Home</NavLink>
-                </li>
-                <li>
-                    <NavLink exact to='/about' activeClassName='activeNav'>About</NavLink>
-                </li>
-                <li>
-                    <NavLink exact to='/contribute' activeClassName='activeNav'>Contribute</NavLink>
-                </li>
-                <li>
-                    <NavLink exact to='/artwork' activeClassName='activeNav'>Artwork</NavLink>
-                </li>  
-                <li>
-                    <NavLink exact to='/admin' activeClassName='activeNav'>Admin</NavLink>
-                </li>
-            </ul></div>
-        </nav>
+            <nav className='navbar'>
+                <div className="navbar-links">
+                    <ul>
+                        <li>
+                            <NavLink end to='/'>Home</NavLink>
+                        </li>
+                        <li>
+                            <NavLink end to='/about'>About</NavLink>
+                        </li>
+                        <li>
+                            <NavLink end to='/contribute'>Contribute</NavLink>
+                        </li>
+                        <li>
+                            <NavLink end to='/artwork'>Artwork</NavLink>
+                        </li>
+                        <li>
+                            <NavLink end to='/admin'>Admin</NavLink>
+                        </li>
+                    </ul></div>
+            </nav>
         </div>
     );
 }
