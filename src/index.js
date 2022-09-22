@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Auth0Provider } from '@auth0/auth0-react';
+import { MantineProvider } from '@mantine/core';
 
-import './index.css';
+import './index.scss';
 import App from './containers/App/App';
 import reportWebVitals from './reportWebVitals';
 
@@ -10,11 +11,13 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <MantineProvider theme={{ fontFamily: 'Segoe UI' }} withGlobalStyles withNormalizeCSS>
       <Auth0Provider domain={process.env.REACT_APP_AUTH_DOMAIN}
       clientId={process.env.REACT_APP_CLIENTID}
       redirectUri={`http://localhost:3000/contribute`}>
        <App />
       </Auth0Provider>
+      </MantineProvider>
 
   </React.StrictMode>
 );
