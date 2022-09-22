@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { TextInput, Checkbox, Button, Group, Box, Select } from '@mantine/core';
 import { Upload } from 'upload-js';
 
 // Service calls
@@ -15,7 +16,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 const upload = new Upload({ apiKey: "free" });
 
 
-export default function UploadForm({username, fileUrl}){
+export default function UploadForm({fileUrl, admin}){
+    const [searchValue, onSearchChange] = useState(''); // Search form
     const [assetExtra, setAssetExtra] = useState({});
     const [inputfileObj, setInputFileObj] = useState({});
     const [modelID, setModelID] = useState(null);
@@ -37,7 +39,8 @@ export default function UploadForm({username, fileUrl}){
     useEffect(() => {
         (async () => {
             let modelOptions = await fetchModels();
-            setModelOptions(modelOptions);
+            if (modelOptions && (modelOptions instanceof Array) && modelOptions.length > 0)
+                setModelOptions(modelOptions);
         })();
     }, []);
 
@@ -69,6 +72,13 @@ export default function UploadForm({username, fileUrl}){
         if (!inputfileObj.modelUsername) {
             setModelMissingError(true);
         }
+        
+        if (admin) {
+            // Do something else and return
+            // Set all of the data fields according to what the uploader put in their request
+        }
+
+
         let storedFileUrl = fetchAssetByUrl(fileUrl); 
         if (storedFileUrl) {
             return (
@@ -124,24 +134,44 @@ export default function UploadForm({username, fileUrl}){
                 <h3>Contribution Form:</h3>
             <form id='contribution-form' onSubmit={e => submitUploadForm(e)}>
                 <div className={`asset-model-select ${modelMissingError ? 'asset-model-error error' : ''}`}>
-                <label htmlFor='model-select-input'>Model's twitch username:</label>
-                <input type="text" list="models" name="model-select-input" id="model-input" value={inputfileObj.modelUsername} 
-                onChange={e => setInputFileObj({...inputfileObj, modelUsername: e.target.value ? e.target.value : ""})}/> 
-                <datalist name="model-select" id="model-select-input">
+                {/* <label htmlFor='model-select-input'>Model's twitch username:</label> */}
+                <Select type="text" 
+                        label="Model's Twitch Username"
+                        placeholder='Which streamer is this?'
+                        name="model-select-input"
+                        id="model-input"
+                        searchable
+                        searchValue={searchValue}
+                        onSearchChange={onSearchChange}
+                        onChange={e => setInputFileObj({...inputfileObj, modelUsername: e.target.value ? e.target.value : ""})}
+                        nothingFound="Streamer not found"
+                        value={inputfileObj.modelUsername} 
+                        
+                        data={modelOptions}
+                        
+                        />
+
+                // onChange={e => setInputFileObj({...inputfileObj, modelUsername: e.target.value ? e.target.value : ""})}
+                
+                
+                {/* <datalist name="model-select" id="model-select-input">
                     {modelOptions.map(model => {
                         return (
                             <option value={`${model.twitchUsername}`}>{model[0].toUpperCase() + model.slice(1)}</option>
                         );
                     })}
-                </datalist>
+                </datalist> */}
                 {modelMissingError ? (<div className='modelMissingError'> <p>Must input model</p></div>) : (<></>)}
                 </div>
 
                 <div className="asset-owner-input">
-                    <input type="radio" name="asset-owner-input" id="asset-owner-input-yes" value={inputfileObj.owner} onChange={e => setInputFileObj({...inputfileObj, owner: true})}/>
+                    <fieldset>
+                    <legend>Are you the rightful owner of this image?: </legend>
+                    <input title='Are you the rightful owner of this image?:' type="radio" name="asset-owner-input" id="asset-owner-input-yes" value={inputfileObj.owner} onChange={e => setInputFileObj({...inputfileObj, owner: true})}/>
                     <label htmlFor="asset-owner-input-yes">Yes</label>
                     <input type="radio" name="asset-owner-input" id="asset-owner-input-no" value={inputfileObj.owner} onChange={e => setInputFileObj({...inputfileObj, owner: false})}/>
                     <label htmlFor="asset-owner-input-no">No</label>
+                    </fieldset>
                 </div>
 
                 <div className="asset-category-div">
@@ -164,14 +194,10 @@ export default function UploadForm({username, fileUrl}){
                     <input type="text" value={inputfileObj.assetLabel} id="asset-label" onChange={e => setInputFileObj({...inputfileObj, 'assetLabel': `${e.target.value}`})} />
                 </div>
                 <div className="asset-brief-description">
-                    <textarea name="asset-brief-description" id="asset-brief-description" cols="30" rows="10">
+                    <label htmlFor='asset-brief-description-label'>Brief description:</label>
+                    <textarea name="asset-brief-description" id="asset-brief-description" cols="30" rows="4">
                     </textarea>
                 </div>
-
-                <div className="asset-icon-upload">
-                    <input type="file" name="icon-upload" id="icon-upload"/>
-                </div>
-
                 <div className="asset-color-select">
                      <label htmlFor="asset-color-select">
                             Color:
