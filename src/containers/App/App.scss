@@ -8,9 +8,9 @@
   font-family: $normal-font, 'Lucida Console';
   height: 100%;
   width: 100%;
-  border: 20px solid $background-color;
-  border-style: solid;
 
+  flex-direction: column;
+  display: flex;
 }
 
 .App-logo {
@@ -22,19 +22,6 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
-  min-height: 10vh;
-  display: flex;
-  flex-direction: column;
-  align-items:  center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: $font-color;
-  padding-bottom: $div-padding-top;
-  padding-top: $padding-top;
-  background-color: $secondary-bg-color;
 }
 
 

@@ -1,0 +1,30 @@
+@use './style' as *;
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-size: $medium-font-size;
+  font-family: $normal-font, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  background-color: $background-color;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+#root {
+  height: 100%;
+  // max-width: 1280px;
+  display: flex;
+  justify-content: center;
+  padding: $padding-left ;
+}
