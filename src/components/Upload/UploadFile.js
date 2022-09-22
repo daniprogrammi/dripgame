@@ -42,43 +42,6 @@ export default function UploadFile({username}) {
         }
     }
 
-    const submitUploadForm = (e) => {
-        e.preventDefault();
-
-        console.log(inputfileObj.assetCategory);
-        console.log(inputfileObj.assetLabel);
-        console.log(inputfileObj.twitchUsername);
-        
-        let storedFileUrl = fetchAssetByUrl(fileUrl); 
-        if (storedFileUrl) {
-            return (
-                <div className='upload-error'>
-                    <p>This file already uploaded</p>
-                </div>
-            );
-        }
-        else {
-            let fileObj = uploadAsset({
-            "modelID": modelID,
-            "category": inputfileObj.assetCategory,
-            "label": inputfileObj.assetLabel,
-            "file": fileUrl,
-            "twitchUsername": username,
-            "approved": false,
-            "published": false,
-            "assetExtra" : { 
-                            "color": inputfileObj.color ? inputfileObj.color : null,
-                            "icon": inputfileObj.icon ? inputfileObj.icon : null, // Either scale down assetFile or ask users to submit a 50x50 file
-                            "briefDescription": inputfileObj.briefDescription ? inputfileObj.briefDescription : null, // Mostly for use in alt text for images
-                            ...assetExtra
-                            }
-            });
-        }
-        // if (!!fileUrl) { //if filename is not already stored
-            // await createAsset(assetCategory, assetLabel, fileUrl, contributorName);
-        // }       
-    }
-    const categoryOptions = ['tops', 'bottoms', 'sets', 'shoes', 'accessories', 'hair', 'face', 'poses', 'backdrop'];
     if (fileUrl !== null){
 
         return (
@@ -86,44 +49,11 @@ export default function UploadFile({username}) {
             <div className="row">
                 <h4>Hey {username}, give us more info about this upload:</h4>
             </div>
-            <form id='contributionForm' onSubmit={e => submitUploadForm(e)}>
-                <div className="row">
-                    <div className="contribution-form-asset-categories">
-                        <label htmlFor="asset-category">
-                            Asset category:
-                        </label>
-
-                        <select id='asset-category' name='asset-category' value={inputfileObj.assetCategory} onChange={e => setInputFileObj({...inputfileObj, 'assetCategory': e.target.value})}>
-                            {categoryOptions.map(category => {
-                                return (
-                                    <option value={`${category}`}>{category[0].toUpperCase() + category.slice(1)}</option>
-                                );
-                            })}
-                        </select>
-                    </div>
-                </div>
-
-                <div className='row'>
-                    <label htmlFor="asset-label">Name for this asset:</label>
-                    <input type="text" value={inputfileObj.assetLabel} id="asset-label" onChange={e => setInputFileObj({...inputfileObj, 'assetLabel': `${e.target.value}`})} />
-                    {/* Eventually will include socials as well */}
-                {/* <input type="text" name="asset-contributor-other-things-idk-i-forget" id="" /> */}
-                </div>
-
-            <div className='row'>
-                <p>Submit any extra info about this asset:</p>
-                <textarea name="assetExtra" id="assetExtra-area" cols="30" rows="10"  placeholder='example(brand: gucci, material: silk)'
-                     onChange={e => setAssetExtra({...assetExtra, ...parseAssetExtra(e.target.value)})}>
-                </textarea>
-            </div>
-            
-            <input type="submit" value="Submit"/>
-        </form>
+            <UploadForm fileUrl={fileUrl}></UploadForm>
         </div>
         );
     }
     
-    console.log(`This user: ` + username);
     if (error !== null) return error.message;
     if (progress !== null ) return <>File uploading... {progress}%</>;
 
