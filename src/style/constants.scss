@@ -1,13 +1,14 @@
 // "Vivid and sharp" scheme
-$background-color: rgb(42, 27, 61);
-$secondary-bg-color: rgb(68, 49, 141);
+$background-color:rgb(32, 12, 58);
+$secondary-bg-color:  rgb(42, 27, 61);
+$medium-color: rgb(68, 49, 141);
 $highlight-color-pink: rgb(216, 63, 135);
 $highlight-color-purple: rgb(171, 116, 233);
 $font-color: rgb(184, 199, 202);
 
 // sans-serif, monospace
 $bold-font: Impact; // Optima?, Candara
-$normal-font: 'Lucida Console';
+$normal-font: 'Inconsolata';
 $very-large-font-size: 2.5rem;
 $large-font-size: 2rem;
 $medium-font-size: 1.5rem;
@@ -16,8 +17,8 @@ $small-font-size: 1rem;
 // spacing
 $div-padding-top: 10vh;
 $div-padding-left: 2vw;
-$padding-top: 16px;
-$padding-left: 20px;
+$padding-top: 64px;
+$padding-left: 32px;
 
 $standard-width: 50%;
 $standard-height: 50%;
