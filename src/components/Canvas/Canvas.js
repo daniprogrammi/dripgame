@@ -1,6 +1,8 @@
 import { useEffect, useCallback, useState, useRef, useContext, createContext } from 'react';
 import { fabric } from 'fabric';
 
+import BottomBar from './BottomBar.js';
+
 import AssetCarousel from '../AssetCarousel/AssetCarousel.js';
 import default_hair1 from '../../assets/Hair/cropped_hair1.png';
 import default_body from '../../assets/Body/cropped_pose1.png';
@@ -161,11 +163,14 @@ export default function Canvas() {
                 <div className='col-md-9'>
                     <canvas 
                         className='mainCanvas'
-                        width={1260}
+                        width={1280}
                         height={720}
                         ref={myRef}/>
+                </div>
+
+                {/* BottomBar */}
+                <BottomBar canvas={canvas}></BottomBar>
             </div>
         </div>
-            </div>
     )
 }

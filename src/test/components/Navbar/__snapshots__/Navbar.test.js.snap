@@ -27,84 +27,9 @@ Object {
         <nav
           class="navbar"
         >
-          <div
+          <ul
             class="navbar-links"
           >
-            <ul>
-              <li>
-                <a
-                  aria-current="page"
-                  class="active"
-                  href="/"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  class=""
-                  href="/about"
-                >
-                  About
-                </a>
-              </li>
-              <li>
-                <a
-                  class=""
-                  href="/contribute"
-                >
-                  Contribute
-                </a>
-              </li>
-              <li>
-                <a
-                  class=""
-                  href="/artwork"
-                >
-                  Artwork
-                </a>
-              </li>
-              <li>
-                <a
-                  class=""
-                  href="/admin"
-                >
-                  Admin
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <div>
-      <div
-        class="logoDiv"
-      >
-        <img
-          class="logoImage"
-          src="logo192.png"
-        />
-        <a
-          class="logoLink"
-          href="#"
-        >
-          <p
-            class="logoTitle"
-          >
-            DripGame
-          </p>
-        </a>
-      </div>
-      <nav
-        class="navbar"
-      >
-        <div
-          class="navbar-links"
-        >
-          <ul>
             <li>
               <a
                 aria-current="page"
@@ -147,7 +72,78 @@ Object {
               </a>
             </li>
           </ul>
-        </div>
+        </nav>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div>
+      <div
+        class="logoDiv"
+      >
+        <img
+          class="logoImage"
+          src="logo192.png"
+        />
+        <a
+          class="logoLink"
+          href="#"
+        >
+          <p
+            class="logoTitle"
+          >
+            DripGame
+          </p>
+        </a>
+      </div>
+      <nav
+        class="navbar"
+      >
+        <ul
+          class="navbar-links"
+        >
+          <li>
+            <a
+              aria-current="page"
+              class="active"
+              href="/"
+            >
+              Home
+            </a>
+          </li>
+          <li>
+            <a
+              class=""
+              href="/about"
+            >
+              About
+            </a>
+          </li>
+          <li>
+            <a
+              class=""
+              href="/contribute"
+            >
+              Contribute
+            </a>
+          </li>
+          <li>
+            <a
+              class=""
+              href="/artwork"
+            >
+              Artwork
+            </a>
+          </li>
+          <li>
+            <a
+              class=""
+              href="/admin"
+            >
+              Admin
+            </a>
+          </li>
+        </ul>
       </nav>
     </div>
   </div>,

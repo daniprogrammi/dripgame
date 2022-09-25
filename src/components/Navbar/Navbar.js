@@ -7,24 +7,23 @@ export default function Navbar() {
         <div >
             <Logo></Logo>
             <nav className='navbar'>
-                <div className="navbar-links">
-                    <ul>
-                        <li>
-                            <NavLink end to='/'>Home</NavLink>
-                        </li>
-                        <li>
-                            <NavLink end to='/about'>About</NavLink>
-                        </li>
-                        <li>
-                            <NavLink end to='/contribute'>Contribute</NavLink>
-                        </li>
-                        <li>
-                            <NavLink end to='/artwork'>Artwork</NavLink>
-                        </li>
-                        <li>
-                            <NavLink end to='/admin'>Admin</NavLink>
-                        </li>
-                    </ul></div>
+                <ul className="navbar-links">
+                    <li>
+                        <NavLink end to='/'>Home</NavLink>
+                    </li>
+                    <li>
+                        <NavLink end to='/about'>About</NavLink>
+                    </li>
+                    <li>
+                        <NavLink end to='/contribute'>Contribute</NavLink>
+                    </li>
+                    <li>
+                        <NavLink end to='/artwork'>Artwork</NavLink>
+                    </li>
+                    <li>
+                        <NavLink end to='/admin'>Admin</NavLink>
+                    </li>
+                </ul>
             </nav>
         </div>
     );

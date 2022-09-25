@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import approveAsset from "../../services/approveAsset";
 import rejectAsset from "../../services/rejectAsset";
 import fetchAllAssets from "../../services/fetchAllAssets";
-
+import UploadForm from "../UploadForm/UploadForm";
 
 
 export default function Decision(){
@@ -71,7 +71,7 @@ export default function Decision(){
                     })}
             <button className="accept-img-btn btn btn-primary" onClick={(event) => acceptImageCallback(event.target.id)}>Accept</button>
             <button className="reject-img-btn btn btn-primary" onClick={(event) => rejectImageCallback(event.target.id)}>Reject</button>
-           
+           <UploadForm></UploadForm>
         </div>
     );
 }

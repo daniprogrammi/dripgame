@@ -6,15 +6,13 @@
 }
 
 .logoDiv {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    align-content: center;
     justify-content: center;
-    display: inline;
-    float: left;
 
     a {
         text-decoration-line: none;
-        padding: 50px 50px;
     }
 
     p {

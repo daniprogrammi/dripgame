@@ -1,23 +1,25 @@
 /* Currently active navigation tab */
 @use '../../style' as *;
 
+.topbarContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .navbar {
     font-family: $normal-font;
     font-size: $medium-font-size;
-    height: 50px;
-    display: inline;
-    justify-content: center;
-    align-items: center;
 
     .navbar-links {
         background-color: $medium-color;
-        width: fit-content;
-        height: 10vh;
+        display:flex;
+        align-items: center;
+        padding: 0;
     }
 
     li {
         list-style-type: none;
-        float: left;
 
         a {
            display: block;
@@ -37,14 +39,6 @@
     li:hover {
         background-color: rgba($medium-color, 0.5);
     }
-    >ul {
-        display: grid;
-        grid-template-columns: repeat(5, auto);
-        list-style: none;
-        text-align: center;
-        width: 80vw;
-    }
 
-    border-bottom: 5px solid rgba(23, 2, 37, 0.865);
 }
 

@@ -10,9 +10,7 @@
     display: flex;
     flex-wrap: wrap;
     background-color: $background-color;
-    position: absolute;
     justify-content: center;
-    order: -1;
 
     h3 {
         color: $font-color;
@@ -67,6 +65,21 @@
             .drawerBtnClose {
                 background-color: $font-color;
             }
+        }
+    }
+
+    .bottom-bar {
+        height: fit-content;
+        background-color: $medium-color;
+        display: flex;
+        justify-content: space-evenly;
+
+        a {
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: rgb(134, 134, 236);
         }
     }
 }

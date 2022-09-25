@@ -4,6 +4,11 @@
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^1.10.2",
+    "@emotion/react": "^11.10.4",
+    "@mantine/core": "^5.4.0",
+    "@mantine/form": "^5.4.0",
+    "@mantine/hooks": "^5.4.0",
+    "@mantine/modals": "^5.4.0",
     "assert": "^2.0.0",
     "fabric": "^5.2.4",
     "mongodb": "^4.8.1",
