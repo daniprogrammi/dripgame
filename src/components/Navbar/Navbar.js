@@ -4,7 +4,7 @@ import Logo from '../Logo/Logo';
 
 export default function Navbar() {
     return (
-        <div >
+        <div className='topbarContent'>
             <Logo></Logo>
             <nav className='navbar'>
                 <ul className="navbar-links">
