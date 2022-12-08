@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { TextInput, Checkbox, Button, Group, Box, Select } from '@mantine/core';
+import { TextInput, Checkbox, Button, Group, Box, Select, Radio, Textarea, FileInput, Text } from '@mantine/core';
+import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { Upload } from 'upload-js';
 
 // Service calls
@@ -16,8 +17,10 @@ import { useAuth0 } from '@auth0/auth0-react';
 const upload = new Upload({ apiKey: "free" });
 
 
-export default function UploadForm({fileUrl, admin}){
+export default function UploadForm({fileUrl, admin=false}){
     const [searchValue, onSearchChange] = useState(''); // Search form
+    const [ ownerVal, setOwnerVal ] = useState(false);
+    const [ assetCat, setAssetCat ] = useState("");
     const [assetExtra, setAssetExtra] = useState({});
     const [inputfileObj, setInputFileObj] = useState({});
     const [modelID, setModelID] = useState(null);
@@ -134,9 +137,8 @@ export default function UploadForm({fileUrl, admin}){
                 <h3>Contribution Form:</h3>
             <form id='contribution-form' onSubmit={e => submitUploadForm(e)}>
                 <div className={`asset-model-select ${modelMissingError ? 'asset-model-error error' : ''}`}>
-                {/* <label htmlFor='model-select-input'>Model's twitch username:</label> */}
+                <label htmlFor='model-select-input'>Model's twitch username:</label>
                 <Select type="text" 
-                        label="Model's Twitch Username"
                         placeholder='Which streamer is this?'
                         name="model-select-input"
                         id="model-input"
@@ -151,7 +153,7 @@ export default function UploadForm({fileUrl, admin}){
                         
                         />
 
-                // onChange={e => setInputFileObj({...inputfileObj, modelUsername: e.target.value ? e.target.value : ""})}
+                {/* // onChange={e => setInputFileObj({...inputfileObj, modelUsername: e.target.value ? e.target.value : ""})} */}
                 
                 
                 {/* <datalist name="model-select" id="model-select-input">
@@ -165,13 +167,25 @@ export default function UploadForm({fileUrl, admin}){
                 </div>
 
                 <div className="asset-owner-input">
-                    <fieldset>
+                    {/* <fieldset> */}
                     <legend>Are you the rightful owner of this image?: </legend>
+                    <Radio.Group
+                        name="image-owner"
+                        label="Did you create this image?"
+                        spacing="sm"
+                        // value={ownerVal}
+                        // onChange={setOwnerVal} //not able to change radio btn NOT WORKING???
+                    >
+                        <Radio value={true} label='Yes'/>
+                        <Radio value={false} label='No'/>
+                    </Radio.Group>
+                    
+{/* 
                     <input title='Are you the rightful owner of this image?:' type="radio" name="asset-owner-input" id="asset-owner-input-yes" value={inputfileObj.owner} onChange={e => setInputFileObj({...inputfileObj, owner: true})}/>
                     <label htmlFor="asset-owner-input-yes">Yes</label>
                     <input type="radio" name="asset-owner-input" id="asset-owner-input-no" value={inputfileObj.owner} onChange={e => setInputFileObj({...inputfileObj, owner: false})}/>
-                    <label htmlFor="asset-owner-input-no">No</label>
-                    </fieldset>
+                    <label htmlFor="asset-owner-input-no">No</label> */}
+                    {/* </fieldset> */}
                 </div>
 
                 <div className="asset-category-div">
@@ -179,61 +193,86 @@ export default function UploadForm({fileUrl, admin}){
                             Asset category:
                         </label>
 
-                        <select id='asset-category-select' name='asset-category' value={inputfileObj.assetCategory} 
-                                onChange={e => setInputFileObj({...inputfileObj, 'assetCategory': e.target.value})}>
-                            {categoryOptions.map(category => {
+                        <Select id='asset-category-select' name='asset-category' value={assetCat} 
+                                searchable
+                                onChange={setAssetCat}
+                                data={categoryOptions.map(category => {
+                                    return {value: category, label: category[0].toUpperCase() + category.slice(1)};
+                                })}>
+                            {/* {categoryOptions.map(category => {
                                 return (
                                     <option value={`${category}`}>{category[0].toUpperCase() + category.slice(1)}</option>
                                 );
-                            })}
-                        </select>
+                            })} */}
+                        </Select>
                 </div> 
                 
                 <div className="asset-label-div">
                     <label htmlFor="asset-label">Name for this asset:</label>
-                    <input type="text" value={inputfileObj.assetLabel} id="asset-label" onChange={e => setInputFileObj({...inputfileObj, 'assetLabel': `${e.target.value}`})} />
+                    <TextInput type="text" value={inputfileObj.assetLabel} placeholder="Label here" id="asset-label" onChange={e => setInputFileObj({...inputfileObj, 'assetLabel': `${e.target.value}`})} />
                 </div>
                 <div className="asset-brief-description">
                     <label htmlFor='asset-brief-description-label'>Brief description:</label>
-                    <textarea name="asset-brief-description" id="asset-brief-description" cols="30" rows="4">
-                    </textarea>
+                    <Textarea name="asset-brief-description" id="asset-brief-description" cols="30" rows="4">
+                    </Textarea>
                 </div>
                 <div className="asset-color-select">
                      <label htmlFor="asset-color-select">
                             Color:
                     </label>                   
-                    <select name="asset-color-select" id="asset-color-select" value={inputfileObj.color}>
-                         {colors.map(color => {
+                    <Select 
+                        name="asset-color-select" 
+                        id="asset-color-select" 
+                        value={inputfileObj.color}
+                        onChange={e=> setInputFileObj({...inputfileObj, color: inputfileObj.color})}
+                        data={colors.map(color => {
+                            return {value: color, label: color[0].toUpperCase() + color.slice(1)};
+                        })}
+                        >
+                         {/* {colors.map(color => {
                                 return (
                                     <option value={`${color}`}>{color[0].toUpperCase() + color.slice(1)}</option>
                                 );
-                         })}
-                    </select>
+                         })} */}
+                    </Select>
                 </div>
 
                 <div className="asset-icon-upload">
                     <label for="icon-upload" className='form-label'>Add an icon for this upload:</label>
-                         <input 
+                         <Dropzone 
                             className='icon-upload-input' 
                             class='icon-upload'
                             id='icon-upload'
-                            type="file"
-                            onChange={upload.createFileInputHandler({
+                            accept={["image/png","image/jpeg","image/jpg"]}
+                            placeholder='Your icon here'
+                            aria-label='Your icon here'
+                            onDrop={upload.createFileInputHandler({
                                 onBegin: ({cancel}) => setProgress(0),
                                 onProgress: ({ progress }) => setProgress(progress),
                                 onUploaded: ({ iconFileUrl }) => setIconFileUrl(iconFileUrl),
                                 onError: (error) => setError(error)
-                            })}>
-                         </input>
+                            })}
+                            >
+                                <Group>
+                                    <Dropzone.Accept>
+                                    </Dropzone.Accept>
+                                    <Dropzone.Reject>
+                                    </Dropzone.Reject>
+                                    <div>
+                                        <Text size="xl" inline>
+                                            Drag image here
+                                        </Text>
+                                    </div>
+                                </Group>
+                         </Dropzone>
 
                 </div>
 
                 <div className="asset-extra-upload">
                     <p>Submit any extra info about this asset:</p>
-                    <p>For example brand of clothing </p>
-                    <textarea name="assetExtra" id="assetExtra-area" cols="30" rows="10"  placeholder='example (brand: gucci, material: silk)'
+                    <Textarea name="assetExtra" id="assetExtra-area" cols="30" rows="10"  placeholder='Example (brand: gucci, material: silk)'
                         onChange={e => setAssetExtra({...assetExtra, ...parseAssetExtra(e.target.value)})}>
-                    </textarea>
+                    </Textarea>
                 </div>
 
                 
