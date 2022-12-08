@@ -1,0 +1,678 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the upload form it renders the upload form component 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="contribution-form"
+      >
+        <h3>
+          Contribution Form:
+        </h3>
+        <form
+          id="contribution-form"
+        >
+          <div
+            class="asset-model-select "
+          >
+            <div
+              class="mantine-InputWrapper-root mantine-Select-root mantine-1m3pqry"
+            >
+              <label
+                class="mantine-InputWrapper-label mantine-Select-label mantine-ittua2"
+                for="model-input"
+                id="model-input-label"
+              >
+                Model's Twitch Username
+              </label>
+              <div
+                aria-controls="model-input"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                class=""
+                role="combobox"
+                tabindex="-1"
+              >
+                <input
+                  name="model-select-input"
+                  type="hidden"
+                  value=""
+                />
+                <div
+                  class="mantine-Input-wrapper mantine-Select-wrapper mantine-12sbrde"
+                >
+                  <input
+                    aria-autocomplete="list"
+                    aria-invalid="false"
+                    autocomplete="off"
+                    class="mantine-Input-input mantine-Select-input mantine-qew57g"
+                    data-mantine-stop-propagation="false"
+                    id="model-input"
+                    placeholder="Which streamer is this?"
+                    type="text"
+                    value=""
+                  />
+                  <div
+                    class="mantine-uquezq mantine-Input-rightSection mantine-Select-rightSection"
+                  >
+                    <svg
+                      data-chevron="true"
+                      fill="none"
+                      height="18"
+                      style="color: rgb(134, 142, 150);"
+                      viewBox="0 0 15 15"
+                      width="18"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        clip-rule="evenodd"
+                        d="M4.93179 5.43179C4.75605 5.60753 4.75605 5.89245 4.93179 6.06819C5.10753 6.24392 5.39245 6.24392 5.56819 6.06819L7.49999 4.13638L9.43179 6.06819C9.60753 6.24392 9.89245 6.24392 10.0682 6.06819C10.2439 5.89245 10.2439 5.60753 10.0682 5.43179L7.81819 3.18179C7.73379 3.0974 7.61933 3.04999 7.49999 3.04999C7.38064 3.04999 7.26618 3.0974 7.18179 3.18179L4.93179 5.43179ZM10.0682 9.56819C10.2439 9.39245 10.2439 9.10753 10.0682 8.93179C9.89245 8.75606 9.60753 8.75606 9.43179 8.93179L7.49999 10.8636L5.56819 8.93179C5.39245 8.75606 5.10753 8.75606 4.93179 8.93179C4.75605 9.10753 4.75605 9.39245 4.93179 9.56819L7.18179 11.8182C7.35753 11.9939 7.64245 11.9939 7.81819 11.8182L10.0682 9.56819Z"
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="asset-owner-input"
+          >
+            <fieldset>
+              <legend>
+                Are you the rightful owner of this image?: 
+              </legend>
+              <input
+                id="asset-owner-input-yes"
+                name="asset-owner-input"
+                title="Are you the rightful owner of this image?:"
+                type="radio"
+                value=""
+              />
+              <label
+                for="asset-owner-input-yes"
+              >
+                Yes
+              </label>
+              <input
+                id="asset-owner-input-no"
+                name="asset-owner-input"
+                type="radio"
+                value=""
+              />
+              <label
+                for="asset-owner-input-no"
+              >
+                No
+              </label>
+            </fieldset>
+          </div>
+          <div
+            class="asset-category-div"
+          >
+            <label
+              for="asset-category"
+            >
+              Asset category:
+            </label>
+            <select
+              data-testid="asset-category-select"
+              id="asset-category-select"
+              name="asset-category"
+            >
+              <option
+                value="tops"
+              >
+                Tops
+              </option>
+              <option
+                value="bottoms"
+              >
+                Bottoms
+              </option>
+              <option
+                value="sets"
+              >
+                Sets
+              </option>
+              <option
+                value="shoes"
+              >
+                Shoes
+              </option>
+              <option
+                value="accessories"
+              >
+                Accessories
+              </option>
+              <option
+                value="hair"
+              >
+                Hair
+              </option>
+              <option
+                value="face"
+              >
+                Face
+              </option>
+              <option
+                value="model"
+              >
+                Model
+              </option>
+              <option
+                value="backdrop"
+              >
+                Backdrop
+              </option>
+            </select>
+          </div>
+          <div
+            class="asset-label-div"
+          >
+            <label
+              for="asset-label"
+            >
+              Name for this asset:
+            </label>
+            <input
+              id="asset-label"
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            class="asset-brief-description"
+          >
+            <label
+              for="asset-brief-description-label"
+            >
+              Brief description:
+            </label>
+            <textarea
+              cols="30"
+              id="asset-brief-description"
+              name="asset-brief-description"
+              rows="4"
+            />
+          </div>
+          <div
+            class="asset-color-select"
+          >
+            <label
+              for="asset-color-select"
+            >
+              Color:
+            </label>
+            <select
+              id="asset-color-select"
+              name="asset-color-select"
+            >
+              <option
+                value="white"
+              >
+                White
+              </option>
+              <option
+                value="yellow"
+              >
+                Yellow
+              </option>
+              <option
+                value="blue"
+              >
+                Blue
+              </option>
+              <option
+                value="red"
+              >
+                Red
+              </option>
+              <option
+                value="green"
+              >
+                Green
+              </option>
+              <option
+                value="black"
+              >
+                Black
+              </option>
+              <option
+                value="brown"
+              >
+                Brown
+              </option>
+              <option
+                value="grey"
+              >
+                Grey
+              </option>
+              <option
+                value="purple"
+              >
+                Purple
+              </option>
+              <option
+                value="orange"
+              >
+                Orange
+              </option>
+              <option
+                value="pink"
+              >
+                Pink
+              </option>
+              <option
+                value="multicolor"
+              >
+                Multicolor
+              </option>
+            </select>
+          </div>
+          <div
+            class="asset-icon-upload"
+          >
+            <label
+              class="form-label"
+              for="icon-upload"
+            >
+              Add an icon for this upload:
+            </label>
+            <input
+              class="icon-upload-input"
+              id="icon-upload"
+              type="file"
+            />
+          </div>
+          <div
+            class="asset-extra-upload"
+          >
+            <p>
+              Submit any extra info about this asset:
+            </p>
+            <p>
+              For example brand of clothing 
+            </p>
+            <textarea
+              cols="30"
+              data-testid="asset-extra"
+              id="assetExtra-area"
+              name="assetExtra"
+              placeholder="example (brand: gucci, material: silk)"
+              rows="10"
+            />
+          </div>
+          <input
+            type="submit"
+            value="Submit"
+          />
+        </form>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="contribution-form"
+    >
+      <h3>
+        Contribution Form:
+      </h3>
+      <form
+        id="contribution-form"
+      >
+        <div
+          class="asset-model-select "
+        >
+          <div
+            class="mantine-InputWrapper-root mantine-Select-root mantine-1m3pqry"
+          >
+            <label
+              class="mantine-InputWrapper-label mantine-Select-label mantine-ittua2"
+              for="model-input"
+              id="model-input-label"
+            >
+              Model's Twitch Username
+            </label>
+            <div
+              aria-controls="model-input"
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              class=""
+              role="combobox"
+              tabindex="-1"
+            >
+              <input
+                name="model-select-input"
+                type="hidden"
+                value=""
+              />
+              <div
+                class="mantine-Input-wrapper mantine-Select-wrapper mantine-12sbrde"
+              >
+                <input
+                  aria-autocomplete="list"
+                  aria-invalid="false"
+                  autocomplete="off"
+                  class="mantine-Input-input mantine-Select-input mantine-qew57g"
+                  data-mantine-stop-propagation="false"
+                  id="model-input"
+                  placeholder="Which streamer is this?"
+                  type="text"
+                  value=""
+                />
+                <div
+                  class="mantine-uquezq mantine-Input-rightSection mantine-Select-rightSection"
+                >
+                  <svg
+                    data-chevron="true"
+                    fill="none"
+                    height="18"
+                    style="color: rgb(134, 142, 150);"
+                    viewBox="0 0 15 15"
+                    width="18"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M4.93179 5.43179C4.75605 5.60753 4.75605 5.89245 4.93179 6.06819C5.10753 6.24392 5.39245 6.24392 5.56819 6.06819L7.49999 4.13638L9.43179 6.06819C9.60753 6.24392 9.89245 6.24392 10.0682 6.06819C10.2439 5.89245 10.2439 5.60753 10.0682 5.43179L7.81819 3.18179C7.73379 3.0974 7.61933 3.04999 7.49999 3.04999C7.38064 3.04999 7.26618 3.0974 7.18179 3.18179L4.93179 5.43179ZM10.0682 9.56819C10.2439 9.39245 10.2439 9.10753 10.0682 8.93179C9.89245 8.75606 9.60753 8.75606 9.43179 8.93179L7.49999 10.8636L5.56819 8.93179C5.39245 8.75606 5.10753 8.75606 4.93179 8.93179C4.75605 9.10753 4.75605 9.39245 4.93179 9.56819L7.18179 11.8182C7.35753 11.9939 7.64245 11.9939 7.81819 11.8182L10.0682 9.56819Z"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="asset-owner-input"
+        >
+          <fieldset>
+            <legend>
+              Are you the rightful owner of this image?: 
+            </legend>
+            <input
+              id="asset-owner-input-yes"
+              name="asset-owner-input"
+              title="Are you the rightful owner of this image?:"
+              type="radio"
+              value=""
+            />
+            <label
+              for="asset-owner-input-yes"
+            >
+              Yes
+            </label>
+            <input
+              id="asset-owner-input-no"
+              name="asset-owner-input"
+              type="radio"
+              value=""
+            />
+            <label
+              for="asset-owner-input-no"
+            >
+              No
+            </label>
+          </fieldset>
+        </div>
+        <div
+          class="asset-category-div"
+        >
+          <label
+            for="asset-category"
+          >
+            Asset category:
+          </label>
+          <select
+            data-testid="asset-category-select"
+            id="asset-category-select"
+            name="asset-category"
+          >
+            <option
+              value="tops"
+            >
+              Tops
+            </option>
+            <option
+              value="bottoms"
+            >
+              Bottoms
+            </option>
+            <option
+              value="sets"
+            >
+              Sets
+            </option>
+            <option
+              value="shoes"
+            >
+              Shoes
+            </option>
+            <option
+              value="accessories"
+            >
+              Accessories
+            </option>
+            <option
+              value="hair"
+            >
+              Hair
+            </option>
+            <option
+              value="face"
+            >
+              Face
+            </option>
+            <option
+              value="model"
+            >
+              Model
+            </option>
+            <option
+              value="backdrop"
+            >
+              Backdrop
+            </option>
+          </select>
+        </div>
+        <div
+          class="asset-label-div"
+        >
+          <label
+            for="asset-label"
+          >
+            Name for this asset:
+          </label>
+          <input
+            id="asset-label"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="asset-brief-description"
+        >
+          <label
+            for="asset-brief-description-label"
+          >
+            Brief description:
+          </label>
+          <textarea
+            cols="30"
+            id="asset-brief-description"
+            name="asset-brief-description"
+            rows="4"
+          />
+        </div>
+        <div
+          class="asset-color-select"
+        >
+          <label
+            for="asset-color-select"
+          >
+            Color:
+          </label>
+          <select
+            id="asset-color-select"
+            name="asset-color-select"
+          >
+            <option
+              value="white"
+            >
+              White
+            </option>
+            <option
+              value="yellow"
+            >
+              Yellow
+            </option>
+            <option
+              value="blue"
+            >
+              Blue
+            </option>
+            <option
+              value="red"
+            >
+              Red
+            </option>
+            <option
+              value="green"
+            >
+              Green
+            </option>
+            <option
+              value="black"
+            >
+              Black
+            </option>
+            <option
+              value="brown"
+            >
+              Brown
+            </option>
+            <option
+              value="grey"
+            >
+              Grey
+            </option>
+            <option
+              value="purple"
+            >
+              Purple
+            </option>
+            <option
+              value="orange"
+            >
+              Orange
+            </option>
+            <option
+              value="pink"
+            >
+              Pink
+            </option>
+            <option
+              value="multicolor"
+            >
+              Multicolor
+            </option>
+          </select>
+        </div>
+        <div
+          class="asset-icon-upload"
+        >
+          <label
+            class="form-label"
+            for="icon-upload"
+          >
+            Add an icon for this upload:
+          </label>
+          <input
+            class="icon-upload-input"
+            id="icon-upload"
+            type="file"
+          />
+        </div>
+        <div
+          class="asset-extra-upload"
+        >
+          <p>
+            Submit any extra info about this asset:
+          </p>
+          <p>
+            For example brand of clothing 
+          </p>
+          <textarea
+            cols="30"
+            data-testid="asset-extra"
+            id="assetExtra-area"
+            name="assetExtra"
+            placeholder="example (brand: gucci, material: silk)"
+            rows="10"
+          />
+        </div>
+        <input
+          type="submit"
+          value="Submit"
+        />
+      </form>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
