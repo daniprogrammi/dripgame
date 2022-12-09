@@ -25,8 +25,8 @@ export default function UploadForm({fileUrl, admin=false}){
     const [inputfileObj, setInputFileObj] = useState({});
     const [modelID, setModelID] = useState(null);
 
-    const [iconFileUrl, setIconFileUrl] = useState(null);    
-    const [progress, setProgress] = useState(null); 
+    const [iconFileUrl, setIconFileUrl] = useState(null);
+    const [progress, setProgress] = useState(null);
     const [error, setError] = useState(null);
 
     const [modelMissingError, setModelMissingError] = useState(false);
@@ -62,7 +62,7 @@ export default function UploadForm({fileUrl, admin=false}){
             }
             return valueObj;
         }
-        catch(e){
+        catch (e) {
             //TODO: Return error
             return {};
         }
@@ -71,18 +71,18 @@ export default function UploadForm({fileUrl, admin=false}){
 
     const submitUploadForm = (e) => {
         e.preventDefault();
-        
+
         if (!inputfileObj.modelUsername) {
             setModelMissingError(true);
         }
-        
+
         if (admin) {
             // Do something else and return
             // Set all of the data fields according to what the uploader put in their request
         }
 
 
-        let storedFileUrl = fetchAssetByUrl(fileUrl); 
+        let storedFileUrl = fetchAssetByUrl(fileUrl);
         if (storedFileUrl) {
             return (
                 <div className='upload-error'>
@@ -92,7 +92,7 @@ export default function UploadForm({fileUrl, admin=false}){
         }
         else {
 
-            (async() => {
+            (async () => {
                 let modelId;
                 let modelObj = await fetchModelByUsername(inputfileObj.modelUsername);
                 if (!modelObj) {
@@ -103,25 +103,25 @@ export default function UploadForm({fileUrl, admin=false}){
             })();
 
             let fileObj = uploadAsset({
-            "modelID": modelID,
-            "category": inputfileObj.assetCategory,
-            "label": inputfileObj.assetLabel,
-            "file": fileUrl,
-            "twitchUsername": user.nickname,
-            "owner": inputfileObj.owner,
-            "assetExtra" : { 
-                            "color": inputfileObj.color ? inputfileObj.color : null,
-                            "icon": iconFileUrl ? iconFileUrl : null, // Either scale down assetFile or ask users to submit a 50x50 file
-                            "briefDescription": inputfileObj.briefDescription ? inputfileObj.briefDescription : null, // Mostly for use in alt text for images
-                            ...assetExtra
-                            }
+                "modelID": modelID,
+                "category": inputfileObj.assetCategory,
+                "label": inputfileObj.assetLabel,
+                "file": fileUrl,
+                "twitchUsername": user.nickname,
+                "owner": inputfileObj.owner,
+                "assetExtra": {
+                    "color": inputfileObj.color ? inputfileObj.color : null,
+                    "icon": iconFileUrl ? iconFileUrl : null, // Either scale down assetFile or ask users to submit a 50x50 file
+                    "briefDescription": inputfileObj.briefDescription ? inputfileObj.briefDescription : null, // Mostly for use in alt text for images
+                    ...assetExtra
+                }
             });
 
-            (async() => {
+            (async () => {
                 // Check that the contributor already exists if not create one here, can update later
                 let contributor = await fetchContributorByUsername(user.nickname);
                 if (!contributor) {
-                    contributor = await createContributor({'twitchUsername': user.nickname});
+                    contributor = await createContributor({ 'twitchUsername': user.nickname });
                 }
 
                 let fileCreated = await uploadAsset(fileObj);
@@ -133,37 +133,38 @@ export default function UploadForm({fileUrl, admin=false}){
     }
 
     return (
-            <div className='contribution-form'>
-                <h3>Contribution Form:</h3>
+        <div className='contribution-form'>
+            <h3>Contribution Form:</h3>
             <form id='contribution-form' onSubmit={e => submitUploadForm(e)}>
                 <div className={`asset-model-select ${modelMissingError ? 'asset-model-error error' : ''}`}>
-                <label htmlFor='model-select-input'>Model's twitch username:</label>
-                <Select type="text" 
+                    {/* <label htmlFor='model-select-input'>Model's twitch username:</label> */}
+                    <Select type="text"
+                        label="Model's Twitch Username"
                         placeholder='Which streamer is this?'
                         name="model-select-input"
                         id="model-input"
                         searchable
                         searchValue={searchValue}
                         onSearchChange={onSearchChange}
-                        onChange={e => setInputFileObj({...inputfileObj, modelUsername: e.target.value ? e.target.value : ""})}
+                        onChange={e => setInputFileObj({ ...inputfileObj, modelUsername: e.target.value ? e.target.value : "" })}
                         nothingFound="Streamer not found"
-                        value={inputfileObj.modelUsername} 
-                        
-                        data={modelOptions}
-                        
-                        />
+                        value={inputfileObj.modelUsername}
 
-                {/* // onChange={e => setInputFileObj({...inputfileObj, modelUsername: e.target.value ? e.target.value : ""})} */}
-                
-                
-                {/* <datalist name="model-select" id="model-select-input">
+                        data={modelOptions}
+
+                    />
+
+
+
+
+                    {/* <datalist name="model-select" id="model-select-input">
                     {modelOptions.map(model => {
                         return (
                             <option value={`${model.twitchUsername}`}>{model[0].toUpperCase() + model.slice(1)}</option>
                         );
                     })}
                 </datalist> */}
-                {modelMissingError ? (<div className='modelMissingError'> <p>Must input model</p></div>) : (<></>)}
+                    {modelMissingError ? (<div className='modelMissingError'> <p>Must input model</p></div>) : (<></>)}
                 </div>
 
                 <div className="asset-owner-input">
@@ -189,9 +190,9 @@ export default function UploadForm({fileUrl, admin=false}){
                 </div>
 
                 <div className="asset-category-div">
-                        <label htmlFor="asset-category">
-                            Asset category:
-                        </label>
+                    <label htmlFor="asset-category">
+                        Asset category:
+                    </label>
 
                         <Select id='asset-category-select' name='asset-category' value={assetCat} 
                                 searchable
@@ -275,9 +276,9 @@ export default function UploadForm({fileUrl, admin=false}){
                     </Textarea>
                 </div>
 
-                
-                <input type="submit" value="Submit"/>
-                </form>
-            </div>
+
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
     )
 }
