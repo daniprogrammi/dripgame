@@ -11,6 +11,8 @@ import default_bottom from '../../assets/Bottoms/cropped_pose1.png';
 import face from '../../assets/Face/cropped_face1.png';
 import { notDeepEqual } from 'assert';
 import './Canvas.scss';
+import fetchAllAssets from '../../services/fetchAllAssets.js';
+import fetchProxyImage from '../../services/fetchProxyImage.js';
 
 const picList = [{
   id: 1,
@@ -54,6 +56,7 @@ export function useCanvas(init, saveState = true) {
     const fc = useRef(null); // Ref to the canvas itself
     const data = useRef(null); // 
     const _init = useRef(init ? init.toString() : undefined); // not sure about this
+    
 
     //set canvas reference 
     const setRef = useCallback((ref) => {
@@ -103,6 +106,7 @@ export function useCanvas(init, saveState = true) {
 }
 
 export default function Canvas() {
+    const [groupedItems, setgroupedItems] = useState({});
     const [canvas, setCanvasRef] = useCanvas(canvas => {
         canvas.on('drop', e => {
             let event = e.e;
@@ -122,45 +126,110 @@ export default function Canvas() {
             let pointer = canvas.getPointer(event);
             let posx = pointer.x;
             let posy = pointer.y;
+            
+            // Created new endpoint to download from server instead of from the image host directly
+           let searchParam = new URLSearchParams({url: imgElement.getAttribute('src')}); 
+           let requestImageUrl = `http://localhost:3005/canvas/download?${searchParam}`;
 
-            let image = new fabric.Image.fromURL(imgElement.getAttribute('src'), (image, err) => {
-                if (!err){
-                image.set({
-                angle: 0,
-                opacity: 100,
-                hasBorders: false,
-                hoverCursor: imgElement.getAttribute('src'), // Can later change to be name of contributor etc
-                left: posx,
-                top: posy,
-                });
-            }
-            canvas.add(image);
-        });
-        }});
-        });
+           let image = new fabric.Image.fromURL(requestImageUrl, (image, err) => {
+                    if (!err){
+                        if (image.width > canvas.getWidth() || image.height > canvas.getHeight()){
+                            let scaleFactor = Math.min(canvas.getWidth()/image.width, canvas.getHeight()/image.height);
+                            image.set({scaleX: scaleFactor, scaleY: scaleFactor});
+                        }
+                        image.set({
+                            angle: 0,
+                            opacity: 100,
+                            hasBorders: false,
+                            hoverCursor: imgElement.getAttribute('src'), // Can later change to be name of contributor etc
+                            left: posx,
+                            top: posy,
+                    });
+                }
+                canvas.add(image);
+            }, {crossOrigin: 'anonymous'});
 
+            
+        //     fetchProxyImage(imgElement.getAttribute('src')).then((url) => {
+
+        //         let image = new fabric.Image.fromURL(url, (image, err) => {
+               
+        //             if (!err){
+        //                 if (image.width > canvas.getWidth() || image.height > canvas.getHeight()){
+        //                     let scaleFactor = Math.min(canvas.getWidth()/image.width, canvas.getHeight()/image.height);
+        //                     image.set({scaleX: scaleFactor, scaleY: scaleFactor});
+        //                 }
+        //                 image.set({
+        //                     angle: 0,
+        //                     opacity: 100,
+        //                     hasBorders: false,
+        //                     hoverCursor: imgElement.getAttribute('src'), // Can later change to be name of contributor etc
+        //                     left: posx,
+        //                     top: posy,
+        //             });
+        //         }
+        //         canvas.add(image);
+        //    }, {crossOrigin: 'anonymous'});
+        //     });
+         }})
+    }
+    );
+
+
+    let [assetList, setAssetList] = useState([]);
+    
     const myRef = useRef(null);
     useEffect(() => {
         setCanvasRef(myRef.current);
     }, [myRef.current]);
 
+    // Get all my images for me plz
+    useEffect(() => {
+        // TODO: A fetchAssetByModel function
+        const fetchList = async () => {
+            const picList = await fetchAllAssets(true, false);
+            if (picList.length == 0){
+                // .... PANIC
+                console.log("No assets to serve :( ");
+            }
+            else {
+                setAssetList(picList);
+            }
+        
+
+        // Extract returned categories
+        // let categoryList = Object.fromEntries(picList.map(item => {
+        //      return {[item.category.name]: item};
+        //     }));
+        let _groupedItems = picList.reduce((acc, item) => { 
+            const categoryName = item.category.name; 
+            if (!acc[categoryName]) {
+                acc[categoryName] = []; 
+            } 
+            acc[categoryName].push(item); 
+            return acc; 
+        }, {});
+        setgroupedItems(_groupedItems);
+        console.log(_groupedItems);
+    }
+        const res = fetchList().then(console.log("Fetched Data"));        
+   }, []);
+
+
    
     return (
         <div className='canvasDiv'>
-            <div className='row'>
-                <div className='col-md-12'>
-                     <h3 className="pageContentTitle">Canvas</h3>  
-                </div>
+            <div className='main-canvas asset-select-column carousel-side'>
+                    {
+                    Object.keys(groupedItems).map(categoryName => {
+                        return (
+                        <div className='assetCarouselDiv'>
+                            <AssetCarousel categoryName={categoryName} carouselItems={groupedItems[categoryName]}></AssetCarousel>
+                        </div>
+                        );
+                    })}            
             </div>
-
-            <div className='row'>
-                <div className='col-md-3 carousel-side'>
-                    <div className='assetCarouselDiv'>
-                    {/* TODO: We'll have multiple carousels for each category of closet item */}
-                    <AssetCarousel category="Test" carouselItems={picList}></AssetCarousel>
-                    </div>
-                </div>
-                <div className='col-md-9'>
+                <div className='main-canvas canvas-column'>
                     <canvas 
                         className='mainCanvas'
                         width={1280}
@@ -170,7 +239,6 @@ export default function Canvas() {
 
                 {/* BottomBar */}
                 <BottomBar canvas={canvas}></BottomBar>
-            </div>
         </div>
     )
 }

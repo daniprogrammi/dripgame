@@ -15,8 +15,8 @@ export default function AssetCarousel(props){
     const carouselItems = 
     props.carouselItems.map(item => {
             return (
-                <Carousel.Item className={`carousel-item-${item.category}`} >
-                        <CanvasAsset inCloset={true} key={`key${item.id}`} src={item.src} id={item.id} width={item.width} height={item.height}></CanvasAsset>
+                <Carousel.Item className={`carousel-item-${item.category.name}`} >
+                        <CanvasAsset inCloset={true} key={`key${item._id}`} src={item.imageURL} id={item._id} width={50} height={50}></CanvasAsset>
                     <Carousel.Caption>
                         <h4>{item.caption}</h4>
                     </Carousel.Caption>
@@ -25,7 +25,7 @@ export default function AssetCarousel(props){
         } 
     );
     return (
-        <Drawer >
+        <Drawer categoryName={props.categoryName}>
             <Carousel slide={false} controls={true} className="carousel-content" activeIndex={index} onSelect={handleSelect} children={carouselItems}>
 
                 {/* <Carousel.Item>

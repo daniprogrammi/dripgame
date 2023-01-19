@@ -19,11 +19,10 @@ const upload = new Upload({ apiKey: "free" });
 
 export default function UploadForm({fileUrl, admin=false}){
     const [searchValue, onSearchChange] = useState(''); // Search form
-    const [ ownerVal, setOwnerVal ] = useState(false);
+    const [ ownerVal, setOwnerVal ] = useState("");
     const [ assetCat, setAssetCat ] = useState("");
     const [assetExtra, setAssetExtra] = useState({});
     const [inputfileObj, setInputFileObj] = useState({});
-    const [modelID, setModelID] = useState(null);
 
     const [iconFileUrl, setIconFileUrl] = useState(null);
     const [progress, setProgress] = useState(null);
@@ -42,6 +41,8 @@ export default function UploadForm({fileUrl, admin=false}){
     useEffect(() => {
         (async () => {
             let modelOptions = await fetchModels();
+            modelOptions = modelOptions.map(obj =>({'value': obj.username, 'label': obj.username}));
+            console.log(modelOptions); 
             if (modelOptions && (modelOptions instanceof Array) && modelOptions.length > 0)
                 setModelOptions(modelOptions);
         })();
@@ -68,8 +69,8 @@ export default function UploadForm({fileUrl, admin=false}){
         }
     }
 
-
-    const submitUploadForm = (e) => {
+    // Useeffecthook
+    const submitUploadForm = async (e) => {
         e.preventDefault();
 
         if (!inputfileObj.modelUsername) {
@@ -82,8 +83,8 @@ export default function UploadForm({fileUrl, admin=false}){
         }
 
 
-        let storedFileUrl = fetchAssetByUrl(fileUrl);
-        if (storedFileUrl) {
+        let storedFileUrl = await fetchAssetByUrl(fileUrl);
+        if (storedFileUrl.length != 0) {
             return (
                 <div className='upload-error'>
                     <p>This file already uploaded</p>
@@ -91,33 +92,29 @@ export default function UploadForm({fileUrl, admin=false}){
             );
         }
         else {
-
-            (async () => {
-                let modelId;
+            let modelId;
                 let modelObj = await fetchModelByUsername(inputfileObj.modelUsername);
-                if (!modelObj) {
+                // TODO: Return an atomic val instead of an array?
+                if (modelObj && modelObj.length == 0) {
                     modelObj = await createModel(inputfileObj.modelUsername);
                 }
                 modelId = modelObj._id;
-                setModelID(modelId);
-            })();
 
-            let fileObj = uploadAsset({
-                "modelID": modelID,
-                "category": inputfileObj.assetCategory,
-                "label": inputfileObj.assetLabel,
-                "file": fileUrl,
-                "twitchUsername": user.nickname,
-                "owner": inputfileObj.owner,
-                "assetExtra": {
-                    "color": inputfileObj.color ? inputfileObj.color : null,
-                    "icon": iconFileUrl ? iconFileUrl : null, // Either scale down assetFile or ask users to submit a 50x50 file
-                    "briefDescription": inputfileObj.briefDescription ? inputfileObj.briefDescription : null, // Mostly for use in alt text for images
-                    ...assetExtra
-                }
-            });
+                let fileObj = {
+                    "modelID": modelId,
+                    "category": assetCat,
+                    "label": inputfileObj.assetLabel,
+                    "file": fileUrl,
+                    "twitchUsername": user.nickname,
+                    "owner": ownerVal,
+                    "assetExtra": {
+                        "color": inputfileObj.color ? inputfileObj.color : null,
+                        "icon": iconFileUrl ? iconFileUrl : null, // Either scale down assetFile or ask users to submit a 50x50 file
+                        "briefDescription": inputfileObj.briefDescription ? inputfileObj.briefDescription : null, // Mostly for use in alt text for images
+                        ...assetExtra
+                    }
+                };
 
-            (async () => {
                 // Check that the contributor already exists if not create one here, can update later
                 let contributor = await fetchContributorByUsername(user.nickname);
                 if (!contributor) {
@@ -125,11 +122,17 @@ export default function UploadForm({fileUrl, admin=false}){
                 }
 
                 let fileCreated = await uploadAsset(fileObj);
-                if (fileCreated.assetInserted) {
+                if (fileCreated) {
                     console.log("Asset successfully created");
+                
+                // Use state; change state to true and then have this render
+                return (<div>
+                        <p> You did it! </p>
+                        </div>);
                 }
-            })();
-        }
+
+
+       }
     }
 
     return (
@@ -144,14 +147,21 @@ export default function UploadForm({fileUrl, admin=false}){
                         name="model-select-input"
                         id="model-input"
                         searchable
+                        creatable
+                        getCreateLabel={(username) => `+ Add ${username}`}
+                        onCreate={(username) => {
+                            let createdItem = { 'value': username, 'label': username};
+                            setModelOptions((current) => [...current, createdItem]);
+                            setInputFileObj({ ...inputfileObj, modelUsername: username ? username : "" });
+                            return username;
+                            }
+                        }
                         searchValue={searchValue}
                         onSearchChange={onSearchChange}
-                        onChange={e => setInputFileObj({ ...inputfileObj, modelUsername: e.target.value ? e.target.value : "" })}
+                        onChange={e => setInputFileObj({ ...inputfileObj, modelUsername: e ? e : "" })}
                         nothingFound="Streamer not found"
-                        value={inputfileObj.modelUsername}
-
+                        // value={inputfileObj.modelUsername}
                         data={modelOptions}
-
                     />
 
 
@@ -168,17 +178,15 @@ export default function UploadForm({fileUrl, admin=false}){
                 </div>
 
                 <div className="asset-owner-input">
-                    {/* <fieldset> */}
-                    <legend>Are you the rightful owner of this image?: </legend>
                     <Radio.Group
                         name="image-owner"
-                        label="Did you create this image?"
+                        label="Are you the rightful owner of this image?:"
                         spacing="sm"
-                        // value={ownerVal}
-                        // onChange={setOwnerVal} //not able to change radio btn NOT WORKING???
+                        value={ownerVal}
+                        onChange={e => {setOwnerVal(e)}} //not able to change radio btn NOT WORKING???
                     >
-                        <Radio value={true} label='Yes'/>
-                        <Radio value={false} label='No'/>
+                        <Radio value={"true"} label='Yes'/>
+                        <Radio value={"false"} label='No'/>
                     </Radio.Group>
                     
 {/* 
@@ -196,10 +204,12 @@ export default function UploadForm({fileUrl, admin=false}){
 
                         <Select id='asset-category-select' name='asset-category' value={assetCat} 
                                 searchable
-                                onChange={setAssetCat}
+                                onChange={e => {setAssetCat(e)}}
                                 data={categoryOptions.map(category => {
                                     return {value: category, label: category[0].toUpperCase() + category.slice(1)};
-                                })}>
+                                })}
+                                
+                                >
                             {/* {categoryOptions.map(category => {
                                 return (
                                     <option value={`${category}`}>{category[0].toUpperCase() + category.slice(1)}</option>
@@ -217,26 +227,29 @@ export default function UploadForm({fileUrl, admin=false}){
                     <Textarea name="asset-brief-description" id="asset-brief-description" cols="30" rows="4">
                     </Textarea>
                 </div>
-                <div className="asset-color-select">
-                     <label htmlFor="asset-color-select">
-                            Color:
-                    </label>                   
-                    <Select 
-                        name="asset-color-select" 
-                        id="asset-color-select" 
-                        value={inputfileObj.color}
-                        onChange={e=> setInputFileObj({...inputfileObj, color: inputfileObj.color})}
-                        data={colors.map(color => {
-                            return {value: color, label: color[0].toUpperCase() + color.slice(1)};
-                        })}
-                        >
-                         {/* {colors.map(color => {
-                                return (
-                                    <option value={`${color}`}>{color[0].toUpperCase() + color.slice(1)}</option>
-                                );
-                         })} */}
-                    </Select>
-                </div>
+                {assetCat !== 'model' && assetCat !== 'face' ? 
+                    (<div className="asset-color-select">
+                        <label htmlFor="asset-color-select">
+                                Color:
+                        </label>                   
+                        <Select 
+                            name="asset-color-select" 
+                            id="asset-color-select" 
+                            value={inputfileObj.color}
+                            onChange={e=> setInputFileObj({...inputfileObj, color: inputfileObj.color})}
+                            data={colors.map(color => {
+                                return {value: color, label: color[0].toUpperCase() + color.slice(1)};
+                            })}
+                            >
+                            {/* {colors.map(color => {
+                                    return (
+                                        <option value={`${color}`}>{color[0].toUpperCase() + color.slice(1)}</option>
+                                    );
+                            })} */}
+                        </Select>
+                    </div>) 
+                    : (<></>) 
+                }
 
                 <div className="asset-icon-upload">
                     <label for="icon-upload" className='form-label'>Add an icon for this upload:</label>
@@ -275,7 +288,6 @@ export default function UploadForm({fileUrl, admin=false}){
                         onChange={e => setAssetExtra({...assetExtra, ...parseAssetExtra(e.target.value)})}>
                     </Textarea>
                 </div>
-
 
                 <input type="submit" value="Submit" />
             </form>

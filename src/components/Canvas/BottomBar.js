@@ -2,15 +2,16 @@ import { useState, useEffect } from "react";
 
 function saveImage(canvas) {
     return function(e){
-    // Generates the blob
         const hiddenDownloadElement = document.getElementById("hidden-download-link");
         if (canvas && canvas.current){
             canvas.current.renderAll();
-        hiddenDownloadElement.href = canvas.current.toDataURL({
-                                                format: 'png'
-                                            });
-        hiddenDownloadElement.download = 'canvas.png';
-        hiddenDownloadElement.click(); // the actual download
+            
+            hiddenDownloadElement.href = canvas.current.toDataURL({format: 'png'}); 
+            hiddenDownloadElement.download = 'canvas.png';
+            hiddenDownloadElement.click(); // the actual download
+        }
+        else {
+            console.log("Nothing to download?");
         }
     }
 }
