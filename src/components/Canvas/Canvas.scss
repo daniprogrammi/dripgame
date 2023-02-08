@@ -2,15 +2,24 @@
 
 .canvasDiv {
 
-    z-index: 5;
-    padding-left: $div-padding-left;
-    padding-right: $div-padding-left;
     width: 100%;
 
-    display: flex;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1.66fr;
     flex-wrap: wrap;
     background-color: $background-color;
     justify-content: center;
+
+    .asset-select-column {
+        height: 0;
+        min-height: 100%;
+        overflow: auto;
+        min-width: max-content;
+        display: flex;
+        flex-direction: row;
+        
+    }
 
     h3 {
         color: $font-color;
@@ -19,8 +28,7 @@
     }
 
     .mainCanvas {
-        border-radius: .5%;
-        border-width: $div-padding-left;
+        border-radius: 0.05%;
         border-style: solid;
         border-color: $highlight-color-pink;
     }
@@ -40,6 +48,8 @@
     .canvas-container {
         justify-content: center;
         position: relative;
+        height: 763px; 
+        // I can't figure out where the offset is coming from but it is displeasing me and my homegirls to look at it!!!!!!
     }
 
 
@@ -69,10 +79,11 @@
     }
 
     .bottom-bar {
-        height: fit-content;
         background-color: $medium-color;
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-around;
+        align-items: center;
+        grid-column: 1 / span 2;
 
         a {
             text-decoration: underline;

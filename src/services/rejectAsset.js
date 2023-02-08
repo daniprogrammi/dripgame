@@ -9,6 +9,7 @@ export default async function rejectAsset(assetId) {
 
     if (response.ok) {
         let data = await response.json(); // An array containing the data
+        return data;
         // Actually not gonna be any data for now
     } else {
         // Add error handling

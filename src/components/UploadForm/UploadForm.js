@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { TextInput, Checkbox, Button, Group, Box, Select, Radio, Textarea, FileInput, Text } from '@mantine/core';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { Upload } from 'upload-js';
-
+import { Navigate, Redirect, useNavigate } from 'react-router-dom';
+import CropFile from '../Upload/CropFile';
 // Service calls
 import createModel from '../../services/createModel';
 import createContributor from '../../services/createContributor';
@@ -34,6 +35,8 @@ export default function UploadForm({fileUrl, admin=false}){
 
     const { user } = useAuth0();
 
+    const [submittedState, setSubmittedState] = useState(false);
+
     const categoryOptions = ['tops', 'bottoms', 'sets', 'shoes', 'accessories', 'hair', 'face', 'model', 'backdrop'];
     const colors = ['white', 'yellow', 'blue', 'red', 'green', 'black', 'brown', 'grey', 'purple', 'orange', 'pink', 'multicolor']
 
@@ -47,6 +50,11 @@ export default function UploadForm({fileUrl, admin=false}){
                 setModelOptions(modelOptions);
         })();
     }, []);
+
+    let nav = useNavigate();
+    const routeChange = () => {
+        nav(''); 
+    }
 
     const parseAssetExtra = (value) => {
         if (!value) {
@@ -84,7 +92,7 @@ export default function UploadForm({fileUrl, admin=false}){
 
 
         let storedFileUrl = await fetchAssetByUrl(fileUrl);
-        if (storedFileUrl.length != 0) {
+        if (storedFileUrl.length !== 0) {
             return (
                 <div className='upload-error'>
                     <p>This file already uploaded</p>
@@ -95,7 +103,7 @@ export default function UploadForm({fileUrl, admin=false}){
             let modelId;
                 let modelObj = await fetchModelByUsername(inputfileObj.modelUsername);
                 // TODO: Return an atomic val instead of an array?
-                if (modelObj && modelObj.length == 0) {
+                if (modelObj && modelObj.length === 0) {
                     modelObj = await createModel(inputfileObj.modelUsername);
                 }
                 modelId = modelObj._id;
@@ -126,18 +134,25 @@ export default function UploadForm({fileUrl, admin=false}){
                     console.log("Asset successfully created");
                 
                 // Use state; change state to true and then have this render
-                return (<div>
-                        <p> You did it! </p>
-                        </div>);
+                setSubmittedState(true);
                 }
-
-
        }
     }
 
-    return (
-        <div className='contribution-form'>
+    // reload(false) refreshes the component instead of the whole page
+    let submittedDiv = (<div>
+        <p>You did it!</p>
+        <button onClick={() => window.location.reload(false)}> 
+            Submit something else
+        </button>
+        </div>);
+    return submittedState ? 
+        submittedDiv
+        : 
+        (<div className='contribution-form'>
             <h3>Contribution Form:</h3>
+            <CropFile fileUrl={fileUrl}></CropFile>
+            {/* Need to return or otherwise change the fileURL */}
             <form id='contribution-form' onSubmit={e => submitUploadForm(e)}>
                 <div className={`asset-model-select ${modelMissingError ? 'asset-model-error error' : ''}`}>
                     {/* <label htmlFor='model-select-input'>Model's twitch username:</label> */}

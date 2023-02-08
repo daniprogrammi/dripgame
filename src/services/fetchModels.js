@@ -10,7 +10,7 @@ export default async function fetchModels(){
 
     if (response.ok) {
         let data = await response.json();
-        return data;
+        return data.data;
     }
     else {
         return [];

@@ -11,8 +11,6 @@ export default function Drawer({categoryName, children}) {
 
     return (
         <div className={`assetDrawer assetDrawer-${categoryName}`}>
-            {/* <BsFillArrowRightCircleFill className="assetDrawerIcon" onClick={toggleDrawer}>
-            </BsFillArrowRightCircleFill> */}
             <button className={drawerOpen ? "btn drawerBtnOpen" : "btn drawerBtnClose"} onClick={toggleDrawer}>
                 {categoryName}</button>
             {drawerOpen ? children : <></>}

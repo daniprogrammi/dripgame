@@ -1,6 +1,5 @@
-export default async function fetchAssetById(assetid){
-    //let searchParam = new URLSearchParams({"id": assetid});
-    let response = await fetch(`http://localhost:3005/assets/${assetid}`, {
+export default async function fetchAllCategories(){
+    let response = await fetch(`http://localhost:3005/assets/categories`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -11,7 +10,6 @@ export default async function fetchAssetById(assetid){
     if (response.ok) {
         let data = await response.json(); // An array containing the data
         return data;
-        
     } else {
         // Add error handling
         return [];

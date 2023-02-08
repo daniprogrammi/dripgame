@@ -10,7 +10,7 @@ export default async function uploadAsset(assetObj){
 
     if (response.ok) {
         let data = await response.json(); // An array containing the data
-        return data;
+        return data.data;
         
     } else {
         // Add error handling

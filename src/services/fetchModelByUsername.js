@@ -1,5 +1,6 @@
 export default async function fetchModelByUsername(username){
-    let response = await fetch(`http://localhost:3005/models/${username}`, {
+    let searchParam = new URLSearchParams({username});
+    let response = await fetch(`http://localhost:3005/models/?${searchParam}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

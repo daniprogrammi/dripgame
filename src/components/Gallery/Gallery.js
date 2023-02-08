@@ -1,5 +1,6 @@
 import { useEffect, useState} from "react";
 import GalleryImage from "./GalleryImage";
+import ImageGallery from 'react-image-gallery';
 import fetchAllAssets from "../../services/fetchAllAssets";
 
 function fetchAssets() {
@@ -18,9 +19,21 @@ export default function Gallery() {
     useEffect(()=> {
         (async () => {
             let data = await fetchAllAssets(true);
-            data.filter(assetObj => assetObj.approved); // Data should be approved to be displayed
-            // TODO: sort by uploadDate if present
-            setassetState(data);
+            let cleanedData = 
+            data.filter(assetObj => assetObj.approved) // Data should be approved to be displayed
+                .map((obj) => {
+                    console.log(obj.imageURL)
+                    return {
+                        original: obj.imageURL, 
+                        thumbnail: obj.imageURL,
+                        thumbnailHeight: 50,
+                        thumbnailWidth: 50,
+                        originalHeight: obj.height ? obj.height/2 : 500,
+                        originalWidth: obj.width ? obj.width/2 : 500
+                }
+                });
+
+            setassetState(cleanedData);
             console.log(data[0]['file']);
         }
         )();
@@ -30,10 +43,12 @@ export default function Gallery() {
     // NEED A STYLE GUIDELINE ASAP because scaling will look horendous
     return (
         <div className="gallery-images">
+            {/* TODO: FIX key error */}
+            <ImageGallery items={assets}/>
             { assets && assets.map((assetObj) => {
                 return ( 
                 <div className="single-image">
-                <GalleryImage imgSource={assetObj.file} 
+                <GalleryImage imgSource={assetObj.imageURL} 
                        imgWidth={assetObj.width ? assetObj.width : 500} 
                        imgHeight={assetObj.height ? assetObj.height: 500}>
                 </GalleryImage>

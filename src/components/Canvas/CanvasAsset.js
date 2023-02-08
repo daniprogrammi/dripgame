@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useDrag } from 'react-dnd'
 // Click to add to canvas vs dragging to canvas ux
 
-export default function CanvasAsset({id, src, width, height, coords, inCloset}){
+export default function CanvasAsset({id, src , width, height, coords, inCloset}){
     const style = coords ? { top: `${coords.y - height/2}px`, left: `${coords.x - width/2}px`, position: "relative"} : {margin:"auto"} ;
      const drag_handler = (event) => {
         // Does it just "know" that the event target is the div child???
@@ -31,7 +31,7 @@ export default function CanvasAsset({id, src, width, height, coords, inCloset}){
         >
         <img className="asset" src={src} 
         id={`image-${id}`}
-        style={{pointerEvents:'none'}} 
+        style={{pointerEvents:'none', height: "100px", width: "100px"}} 
         >
         </img>
         </div>

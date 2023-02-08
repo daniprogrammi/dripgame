@@ -4,60 +4,16 @@ import { fabric } from 'fabric';
 import BottomBar from './BottomBar.js';
 
 import AssetCarousel from '../AssetCarousel/AssetCarousel.js';
-import default_hair1 from '../../assets/Hair/cropped_hair1.png';
-import default_body from '../../assets/Body/cropped_pose1.png';
-import default_shirt1_pose1 from '../../assets/Tops/cropped_shirt1_pose1.png';
-import default_bottom from '../../assets/Bottoms/cropped_pose1.png';
-import face from '../../assets/Face/cropped_face1.png';
-import { notDeepEqual } from 'assert';
 import './Canvas.scss';
 import fetchAllAssets from '../../services/fetchAllAssets.js';
-import fetchProxyImage from '../../services/fetchProxyImage.js';
-
-const picList = [{
-  id: 1,
-  src: default_shirt1_pose1,
-  width: 134,
-  height: 106, 
-  category: 'Tops'
-}, 
-{
-  id: 2,
-  src: face,
-  width: 94,
-  height: 80, 
-  category: 'Face' 
-},
-{
-  id: 3,
-  src: default_bottom
-  ,  width: 106,
-  height: 116 , 
-  category: 'Bottom'
-
-},
-{
-  id: 4,
-  src: default_body
-  ,  width: 161,
-  height: 409 , 
-  category: 'Body'
-},
-{
-  id: 5,
-  src: default_hair1
-  ,  width: 141,
-  height: 84 , 
-  category: 'Hair'
-}]
+import fetchAllCategories from '../../services/fetchAllCategories.js';
 
 export function useCanvas(init, saveState = true) {
     const elementRef = useRef(null); // Ref to the canvas element
     const fc = useRef(null); // Ref to the canvas itself
     const data = useRef(null); // 
     const _init = useRef(init ? init.toString() : undefined); // not sure about this
-    
-
+  
     //set canvas reference 
     const setRef = useCallback((ref) => {
         elementRef.current = ref;
@@ -73,7 +29,7 @@ export function useCanvas(init, saveState = true) {
             return;
         }
 
-        const canvas = new fabric.Canvas(ref, {backgroundColor: 'white'});
+        const canvas = new fabric.Canvas(ref, {backgroundColor: 'white', perPixelTargetFind: true });
         fc.current = canvas;
 
         init && init(canvas);
@@ -149,32 +105,32 @@ export default function Canvas() {
                 canvas.add(image);
             }, {crossOrigin: 'anonymous'});
 
-            
-        //     fetchProxyImage(imgElement.getAttribute('src')).then((url) => {
-
-        //         let image = new fabric.Image.fromURL(url, (image, err) => {
-               
-        //             if (!err){
-        //                 if (image.width > canvas.getWidth() || image.height > canvas.getHeight()){
-        //                     let scaleFactor = Math.min(canvas.getWidth()/image.width, canvas.getHeight()/image.height);
-        //                     image.set({scaleX: scaleFactor, scaleY: scaleFactor});
-        //                 }
-        //                 image.set({
-        //                     angle: 0,
-        //                     opacity: 100,
-        //                     hasBorders: false,
-        //                     hoverCursor: imgElement.getAttribute('src'), // Can later change to be name of contributor etc
-        //                     left: posx,
-        //                     top: posy,
-        //             });
-        //         }
-        //         canvas.add(image);
-        //    }, {crossOrigin: 'anonymous'});
-        //     });
          }})
     }
     );
+    
+    useEffect(() => {
+        
+        const cacheInterval = setInterval(() => {
+            console.log("Caching canvas I hope!")
+            saveCanvas();
+        }, 100000);
+        return () => clearInterval(cacheInterval);
+    }, []);
 
+    // Save canvas state
+    const saveCanvas = () => {
+        let storedCanvasData = canvas.current.toJSON();
+        localStorage.setItem('currentCanvas', storedCanvasData);
+    }; 
+
+    // Load canvas state
+    const loadCanvas = () => {
+        let storedCanvasData = localStorage.getItem('currentCanvas');
+        if (storedCanvasData != null) {
+            canvas.current.loadFromJSON(storedCanvasData);
+        }
+    }
 
     let [assetList, setAssetList] = useState([]);
     
@@ -188,7 +144,7 @@ export default function Canvas() {
         // TODO: A fetchAssetByModel function
         const fetchList = async () => {
             const picList = await fetchAllAssets(true, false);
-            if (picList.length == 0){
+            if (picList.length === 0){
                 // .... PANIC
                 console.log("No assets to serve :( ");
             }
@@ -196,11 +152,11 @@ export default function Canvas() {
                 setAssetList(picList);
             }
         
+        let allCategories = await fetchAllCategories();
+        allCategories = allCategories.data;
 
-        // Extract returned categories
-        // let categoryList = Object.fromEntries(picList.map(item => {
-        //      return {[item.category.name]: item};
-        //     }));
+        let missingKeys = allCategories.filter(x => !Object.keys(picList).includes(x));
+
         let _groupedItems = picList.reduce((acc, item) => { 
             const categoryName = item.category.name; 
             if (!acc[categoryName]) {
@@ -209,6 +165,8 @@ export default function Canvas() {
             acc[categoryName].push(item); 
             return acc; 
         }, {});
+
+        
         setgroupedItems(_groupedItems);
         console.log(_groupedItems);
     }
@@ -223,9 +181,7 @@ export default function Canvas() {
                     {
                     Object.keys(groupedItems).map(categoryName => {
                         return (
-                        <div className='assetCarouselDiv'>
                             <AssetCarousel categoryName={categoryName} carouselItems={groupedItems[categoryName]}></AssetCarousel>
-                        </div>
                         );
                     })}            
             </div>

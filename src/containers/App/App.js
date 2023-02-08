@@ -9,13 +9,12 @@ import Navbar from '../../components/Navbar/Navbar';
 import Admin from '../Admin/Admin';
 import Canvas from '../../components/Canvas/Canvas';
 import Footer from '../../components/Footer/Footer';
+
 function App() {
   return (
     <BrowserRouter>
       <div className='App'>
-        <header className='App-header'>
-          <Navbar></Navbar>
-        </header>
+        <Navbar></Navbar>
         <Routes>
           <Route exact path='/' element={<><Canvas></Canvas></>}/>
           <Route path='/about' element={<About/>}/>

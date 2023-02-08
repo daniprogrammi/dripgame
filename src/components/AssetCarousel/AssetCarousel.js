@@ -1,10 +1,9 @@
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import Carousel from 'react-bootstrap/Carousel';
-//import Asset from '../Asset/Asset';
 import CanvasAsset from '../Canvas/CanvasAsset';
 import Drawer from './Drawer';
 
+// Rename ... eventually
 export default function AssetCarousel(props){
     const [index, setIndex] = useState(0);
     const show = 3;
@@ -15,26 +14,15 @@ export default function AssetCarousel(props){
     const carouselItems = 
     props.carouselItems.map(item => {
             return (
-                <Carousel.Item className={`carousel-item-${item.category.name}`} >
-                        <CanvasAsset inCloset={true} key={`key${item._id}`} src={item.imageURL} id={item._id} width={50} height={50}></CanvasAsset>
-                    <Carousel.Caption>
-                        <h4>{item.caption}</h4>
-                    </Carousel.Caption>
-                </Carousel.Item>
+                <CanvasAsset className={`${item.category.name}`} src={item.imageURL} key={`${item._id}-key`} id={item._id} width={50} height={50}>
+                </CanvasAsset>
             );
         } 
     );
     return (
         <Drawer categoryName={props.categoryName}>
-            <Carousel slide={false} controls={true} className="carousel-content" activeIndex={index} onSelect={handleSelect} children={carouselItems}>
-
-                {/* <Carousel.Item>
-                    <img className="card-img-top" src="https://tr.rbxcdn.com/b3b3a4e014a6ea6650f18662ec2fd8cd/420/420/Image/Png"/>
-                    <Carousel.Caption>
-                        <h4>Card 3</h4>
-                    </Carousel.Caption>
-                </Carousel.Item> */}
-            </Carousel>
+            <div className={`${props.categoryName}-items`} children={carouselItems}>
+            </div>
         </Drawer>
     );
 }

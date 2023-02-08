@@ -11,11 +11,9 @@
         height: auto;
         width: auto;
         padding: 20px 10px;
-        border-width: $standard-width;
-        border-style: solid;
-        border-color: rgba($background-color, 0.8);
         color: $background-color;
         font-size: $medium-font-size;
+        border-radius: 0;
     }
 
     .drawerBtnOpen {

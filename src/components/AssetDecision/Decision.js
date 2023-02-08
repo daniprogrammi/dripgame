@@ -14,7 +14,7 @@ export default function Decision(){
     const [inputfileObj, setInputFileObj] = useState({});
     const [modelID, setModelID] = useState(null);
 
-    const categoryOptions = ['top', 'bottom', 'suit', 'shoe', 'accessories', 'hair', 'face', 'model', 'backdrop'];
+    const categoryOptions = ['top', 'bottom', 'suit', 'shoe', 'accessories', 'hair', 'face', 'model', 'backdrop']; // Use fetchAllCategories instead
     
     const acceptImageCallback = (id) => {
         let focusedAsset = document.getElementsByClassName('focused-img')[0].firstChild;  // <-- proxy for using useRef rn inFocusAsset.current;
@@ -23,6 +23,7 @@ export default function Decision(){
             console.log(id);
             let updatedAsset = await approveAsset(id);            
         })();
+        window.location.reload(false);
     };
 
     const rejectImageCallback = (id) => {
@@ -32,13 +33,14 @@ export default function Decision(){
         (async () => {
             let updatedAsset = await rejectAsset(id);            
         })();
+        window.location.reload(false);
     }
 
 
     useEffect(() => {
         (async () => {
             let assets = await fetchAllAssets();
-            setUndecidedAssets(assets);
+            setUndecidedAssets(assets); // Are these all undecided
             console.log(assets);
             }
          )();
@@ -51,14 +53,16 @@ export default function Decision(){
                    return (
                    <div className="decision-img focused-img">
                    <img id={assetObj._id}
-                    src={assetObj.file} 
+                    src={assetObj.imageURL} 
                     alt={assetObj.briefDescription ? assetObj.briefDescription : "Sorry, no alt text for this asset yet, will update soon"}
+                    width={500}
+                    height={500}
                      />
                      {/* Maybe include form to potentially update asset info */}
                      {assetObj.icon ? 
                         (
                             <div className="icon-img">
-                                <img src={assetObj.icon} alt={assetObj.briefDescription ? `icon for ${assetObj.briefDescription}` : "Sorry, no alt text yet"} />
+                                <img src={assetObj.imageURL} alt={assetObj.briefDescription ? `icon for ${assetObj.briefDescription}` : "Sorry, no alt text yet"} />
                             </div>
                         ) :
 

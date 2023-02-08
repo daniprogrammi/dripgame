@@ -1,5 +1,6 @@
 export default async function fetchAssetByUrl(assetUrl){
-    let response = await fetch(`http://localhost:3005/assets/file/${assetUrl}`, {
+    let searchParam = new URLSearchParams({assetUrl});
+    let response = await fetch(`http://localhost:3005/assets/file/?${searchParam}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
