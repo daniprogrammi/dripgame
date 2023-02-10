@@ -37,10 +37,20 @@ export default function UploadForm({fileUrl, admin=false}){
 
     const [submittedState, setSubmittedState] = useState(false);
 
+    let [croppedUrl, setCroppedUrl] = useState(""); 
+
     const categoryOptions = ['tops', 'bottoms', 'sets', 'shoes', 'accessories', 'hair', 'face', 'model', 'backdrop'];
     const colors = ['white', 'yellow', 'blue', 'red', 'green', 'black', 'brown', 'grey', 'purple', 'orange', 'pink', 'multicolor']
 
     // 
+    const setCroppedDataFromChild = async(dataUrl) => {
+        let blob = await (await fetch(dataUrl)).blob();
+        let uploadedFile = await upload.uploadFile(blob);  
+
+        setCroppedUrl(uploadedFile.fileUrl);
+        console.log(`Set croppedDataUrl from child: ${uploadedFile.fileUrl}`)
+    }
+
     useEffect(() => {
         (async () => {
             let modelOptions = await fetchModels();
@@ -112,7 +122,7 @@ export default function UploadForm({fileUrl, admin=false}){
                     "modelID": modelId,
                     "category": assetCat,
                     "label": inputfileObj.assetLabel,
-                    "file": fileUrl,
+                    "file": croppedUrl ? croppedUrl : fileUrl,
                     "twitchUsername": user.nickname,
                     "owner": ownerVal,
                     "assetExtra": {
@@ -151,7 +161,7 @@ export default function UploadForm({fileUrl, admin=false}){
         : 
         (<div className='contribution-form'>
             <h3>Contribution Form:</h3>
-            <CropFile fileUrl={fileUrl}></CropFile>
+            <CropFile fileUrl={fileUrl} sendData={setCroppedDataFromChild}></CropFile>
             {/* Need to return or otherwise change the fileURL */}
             <form id='contribution-form' onSubmit={e => submitUploadForm(e)}>
                 <div className={`asset-model-select ${modelMissingError ? 'asset-model-error error' : ''}`}>
