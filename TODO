@@ -1,0 +1,30 @@
+# Style Changes
+[ ]  Add margins
+[ ] "CONSISTENT STYLE" (whatever that means)
+[x] Canvas FLUSH to grid
+[x] Consider square corner instead of rounded
+[ ] Canvas is blocking the download and model select
+
+# Other changes!
+[ ] A Button per category of asset
+
+[ ] What does a form look like
+[ ] CORS requests parity wrt the returns and args
+[ ] Asset category not category-ing
+
+# Outstanding features to MVP
+- Streamer select
+- Gallery
+- Search/Filter assets on both the canvas and artwork pages
+- Admin page needs the crop tool added
+    - We need to select admins and have conditional render of an admin page based on identity 
+- Canvas needs controls for item stacking (depth ordering)
+- Canvas caching
+- Maybe we should have max objects on canvas? idk
+
+After that we
+- Accessibility
+- Security
+- Style
+- Refactor
+- SHIP IT (UAT)
