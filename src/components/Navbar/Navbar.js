@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import Logout from '../Auth/Logout';
 import './Navbar.scss';
 import Logo from '../Logo/Logo';
 
@@ -24,6 +25,7 @@ export default function Navbar() {
                         <NavLink end to='/admin'>Admin</NavLink>
                     </li>
                 </ul>
+                <Logout></Logout>
             </nav>
         </div>
     );
