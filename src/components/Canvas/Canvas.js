@@ -8,6 +8,10 @@ import './Canvas.scss';
 import fetchAllAssets from '../../services/fetchAllAssets.js';
 import fetchAllCategories from '../../services/fetchAllCategories.js';
 
+import Search from '../Search/Search.js';
+
+import { AssetListContext } from '../../providers/AssetListProvider.js';
+
 export function useCanvas(init, saveState = true) {
     const elementRef = useRef(null); // Ref to the canvas element
     const fc = useRef(null); // Ref to the canvas itself
@@ -29,7 +33,7 @@ export function useCanvas(init, saveState = true) {
             return;
         }
 
-        const canvas = new fabric.Canvas(ref, {backgroundColor: 'white', perPixelTargetFind: true });
+        const canvas = new fabric.Canvas(ref, {backgroundColor: 'white', perPixelTargetFind: true, renderOnAddRemove: true , preserveObjectStacking: true});
         fc.current = canvas;
 
         init && init(canvas);
@@ -109,6 +113,36 @@ export default function Canvas() {
     }
     );
     
+    // Canvas controls
+    const remove = (imageRef) => {
+        // Check if objects on canvas are the same object returned by imageRef 
+        let currCanvas = canvas.current;
+        let selectedImage = currCanvas.getActiveObject();
+        // if (currCanvas && currCanvas.getObjects().includes(imageRef.current)) {
+            // If object is on canvas
+        currCanvas.remove(selectedImage);
+        // }
+    }
+
+    const moveImageUp = () => {
+        // 
+        let currCanvas = canvas.current;
+        let selectedImage = currCanvas.getActiveObject();
+            // 
+        currCanvas.bringForward(selectedImage, false);//, true);
+    } 
+
+    const moveImageBack = () => {
+        // 
+        let currCanvas = canvas.current;
+        let selectedImage = currCanvas.getActiveObject();
+        currCanvas.sendBackwards(selectedImage, false);//, true);
+    } 
+
+    const getActiveObject = (event) => {
+        console.log(canvas.current.getActiveObject());
+    }
+
     useEffect(() => {
         
         const cacheInterval = setInterval(() => {
@@ -123,6 +157,8 @@ export default function Canvas() {
         let storedCanvasData = canvas.current.toJSON();
         localStorage.setItem('currentCanvas', storedCanvasData);
     }; 
+    
+
 
     // Load canvas state
     const loadCanvas = () => {
@@ -132,49 +168,45 @@ export default function Canvas() {
         }
     }
 
-    let [assetList, setAssetList] = useState([]);
+    let { currAssets, fetchList } = useContext(AssetListContext);
+    //let [assetList, setAssetList] = useState([]); // Maybe use ref instead
+   // let assetList = useRef([]);
     
     const myRef = useRef(null);
     useEffect(() => {
         setCanvasRef(myRef.current);
     }, [myRef.current]);
 
-    // Get all my images for me plz
+    // Get all images
     useEffect(() => {
-        // TODO: A fetchAssetByModel function
-        const fetchList = async () => {
-            const picList = await fetchAllAssets(true, false);
-            if (picList.length === 0){
-                // .... PANIC
-                console.log("No assets to serve :( ");
-            }
-            else {
-                setAssetList(picList);
-            }
-        
-        let allCategories = await fetchAllCategories();
-        allCategories = allCategories.data;
+       const res = fetchList().then(console.log("Fetched Data"));        
+    }, []);
 
-        let missingKeys = allCategories.filter(x => !Object.keys(picList).includes(x));
+    // Group images by category
+    useEffect(() => {
+        let groupItems = async () => {
+            let allCategories = await fetchAllCategories();
+            allCategories = allCategories.data;
+            let currentAssets = currAssets;
+            let missingKeys = allCategories.filter(x => !Object.keys(currentAssets).includes(x));
 
-        let _groupedItems = picList.reduce((acc, item) => { 
-            const categoryName = item.category.name; 
-            if (!acc[categoryName]) {
-                acc[categoryName] = []; 
-            } 
-            acc[categoryName].push(item); 
-            return acc; 
+            //TODO: Include all asset categories
+            let _groupedItems = currentAssets.reduce((acc, item) => { 
+                const categoryName = item.category.name; 
+                if (!acc[categoryName]) {
+                    acc[categoryName] = []; 
+                } 
+                acc[categoryName].push(item); 
+                return acc;  
         }, {});
+       
+            setgroupedItems(_groupedItems);
+            console.log(_groupedItems);
+        }
 
-        
-        setgroupedItems(_groupedItems);
-        console.log(_groupedItems);
-    }
-        const res = fetchList().then(console.log("Fetched Data"));        
-   }, []);
+        groupItems().then(console.log("grouped items!"));
+    }, [currAssets]);
 
-
-   
     return (
         <div className='canvasDiv'>
             <div className='main-canvas asset-select-column carousel-side'>
@@ -183,9 +215,14 @@ export default function Canvas() {
                         return (
                             <AssetCarousel categoryName={categoryName} carouselItems={groupedItems[categoryName]}></AssetCarousel>
                         );
-                    })}            
+                    })}    
+                    <Search></Search>
             </div>
                 <div className='main-canvas canvas-column'>
+                    <button onClick={(event) => {getActiveObject(event)}}>o</button>
+                    <button onClick={(event) => {remove(event)}}>x</button>
+                    <button onClick={(event) => {moveImageUp(event)}}>^</button>
+                    <button onClick={(event) => {moveImageBack(event)}}>v</button>
                     <canvas 
                         className='mainCanvas'
                         width={1280}
@@ -195,6 +232,6 @@ export default function Canvas() {
 
                 {/* BottomBar */}
                 <BottomBar canvas={canvas}></BottomBar>
-        </div>
+        </div>             
     )
 }
