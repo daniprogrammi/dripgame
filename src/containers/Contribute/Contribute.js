@@ -4,6 +4,7 @@ import UploadFile from '../../components/Upload/UploadFile';
 import Auth from '../../components/Auth/Auth';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useState } from 'react';
+import { uploadedFileContext } from '../../components/Upload/UploadWidget';
 
 import './Contribute.scss';
 
@@ -22,7 +23,9 @@ export default function Contribute(){
             </div>
 
             <div className="contributeContent">
-                <AuthdContribute></AuthdContribute>
+                <uploadedFileContext>
+                    <AuthdContribute></AuthdContribute>
+                </uploadedFileContext>
             </div>
         </div>
 

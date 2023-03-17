@@ -4,5 +4,10 @@
     background-color: $secondary-bg-color;
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
+    align-content: center;
 
+    .contribution-form {
+        width: 60%;
+    }
 }

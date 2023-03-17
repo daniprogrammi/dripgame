@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { TextInput, Checkbox, Button, Group, Box, Select, Radio, Textarea, FileInput, Text } from '@mantine/core';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { Upload } from 'upload-js';
@@ -14,6 +14,7 @@ import fetchAssetByUrl from '../../services/fetchAssetByUrl';
 import uploadAsset from '../../services/uploadAsset';
 
 import { useAuth0 } from '@auth0/auth0-react';
+import { uploadedFileContext } from '../Upload/UploadWidget';
 
 const upload = new Upload({ apiKey: "free" });
 
@@ -38,6 +39,8 @@ export default function UploadForm({fileUrl, admin=false}){
     const [submittedState, setSubmittedState] = useState(false);
 
     let [croppedUrl, setCroppedUrl] = useState(""); 
+   
+    let fileUrlFromContext = useContext(uploadedFileContext);
 
     const categoryOptions = ['tops', 'bottoms', 'sets', 'shoes', 'accessories', 'hair', 'face', 'model', 'backdrop'];
     const colors = ['white', 'yellow', 'blue', 'red', 'green', 'black', 'brown', 'grey', 'purple', 'orange', 'pink', 'multicolor']
@@ -100,8 +103,8 @@ export default function UploadForm({fileUrl, admin=false}){
             // Set all of the data fields according to what the uploader put in their request
         }
 
-
-        let storedFileUrl = await fetchAssetByUrl(fileUrl);
+        let uploadedUrl = fileUrl ? fileUrl : fileUrlFromContext;
+        let storedFileUrl = await fetchAssetByUrl(uploadedUrl);
         if (storedFileUrl.length !== 0) {
             return (
                 <div className='upload-error'>
@@ -122,7 +125,7 @@ export default function UploadForm({fileUrl, admin=false}){
                     "modelID": modelId,
                     "category": assetCat,
                     "label": inputfileObj.assetLabel,
-                    "file": croppedUrl ? croppedUrl : fileUrl,
+                    "file": croppedUrl ? croppedUrl : uploadedUrl,
                     "twitchUsername": user.nickname,
                     "owner": ownerVal,
                     "assetExtra": {
@@ -161,7 +164,7 @@ export default function UploadForm({fileUrl, admin=false}){
         : 
         (<div className='contribution-form'>
             <h3>Contribution Form:</h3>
-            <CropFile fileUrl={fileUrl} sendData={setCroppedDataFromChild}></CropFile>
+            {/* <CropFile fileUrl={fileUrl} sendData={setCroppedDataFromChild}></CropFile> */}
             {/* Need to return or otherwise change the fileURL */}
             <form id='contribution-form' onSubmit={e => submitUploadForm(e)}>
                 <div className={`asset-model-select ${modelMissingError ? 'asset-model-error error' : ''}`}>
@@ -261,7 +264,7 @@ export default function UploadForm({fileUrl, admin=false}){
                             name="asset-color-select" 
                             id="asset-color-select" 
                             value={inputfileObj.color}
-                            onChange={e=> setInputFileObj({...inputfileObj, color: inputfileObj.color})}
+                            onChange={e => setInputFileObj({...inputfileObj, color: e})}
                             data={colors.map(color => {
                                 return {value: color, label: color[0].toUpperCase() + color.slice(1)};
                             })}
@@ -276,7 +279,7 @@ export default function UploadForm({fileUrl, admin=false}){
                     : (<></>) 
                 }
 
-                <div className="asset-icon-upload">
+                {/* <div className="asset-icon-upload">
                     <label for="icon-upload" className='form-label'>Add an icon for this upload:</label>
                          <Dropzone 
                             className='icon-upload-input' 
@@ -305,7 +308,7 @@ export default function UploadForm({fileUrl, admin=false}){
                                 </Group>
                          </Dropzone>
 
-                </div>
+                </div> */}
 
                 <div className="asset-extra-upload">
                     <p>Submit any extra info about this asset:</p>
