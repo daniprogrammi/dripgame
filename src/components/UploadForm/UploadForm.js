@@ -15,6 +15,7 @@ import uploadAsset from '../../services/uploadAsset';
 
 import { useAuth0 } from '@auth0/auth0-react';
 import { uploadedFileContext } from '../Upload/UploadWidget';
+import validateStreamerName from '../../services/validateStreamerName';
 
 const upload = new Upload({ apiKey: "free" });
 
@@ -116,7 +117,7 @@ export default function UploadForm({fileUrl, admin=false}){
             let modelId;
                 let modelObj = await fetchModelByUsername(inputfileObj.modelUsername);
                 // TODO: Return an atomic val instead of an array?
-                if (modelObj && modelObj.length === 0) {
+                if (!modelObj || !modelObj._id) {
                     modelObj = await createModel(inputfileObj.modelUsername);
                 }
                 modelId = modelObj._id;
@@ -178,10 +179,17 @@ export default function UploadForm({fileUrl, admin=false}){
                         creatable
                         getCreateLabel={(username) => `+ Add ${username}`}
                         onCreate={(username) => {
-                            let createdItem = { 'value': username, 'label': username};
-                            setModelOptions((current) => [...current, createdItem]);
-                            setInputFileObj({ ...inputfileObj, modelUsername: username ? username : "" });
-                            return username;
+                            validateStreamerName(username).then((result) => {
+                                if (result) {
+                                    let createdItem = { 'value': username, 'label': username};
+                                    setModelOptions((current) => [...current, createdItem]);
+                                    setInputFileObj({ ...inputfileObj, modelUsername: username ? username : "" });
+                                    return username;
+                                } 
+                                else {
+                                    setModelMissingError(true); // Change this to take in an error message
+                                }
+                            });
                             }
                         }
                         searchValue={searchValue}

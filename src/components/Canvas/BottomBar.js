@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import fetchModels from '../../services/fetchModels.js';
+import { AssetListContext } from "../../providers/AssetListProvider";
 
 function saveImage(canvas) {
     return function(e){
@@ -20,6 +22,25 @@ function saveImage(canvas) {
 export default function BottomBar({canvas}) {
     const [ currentModel, setCurrentModel ] = useState(null);
     const [ modelList, setModelList ] = useState([]);
+    const { filterAssetsByModel, setAssetList, assetList } = useContext(AssetListContext);
+
+
+
+    useEffect(() => {
+        const fetchAllModels = async() => {
+            let data = await fetchModels();
+            setModelList(data);
+        }
+
+        fetchAllModels();
+        // const res = fetchAllModels().then(console.log("fetched models")).catch(console.log("oops"));
+    }, []);
+
+
+    useEffect(() => {
+        filterAssetsByModel(currentModel);
+    }, [currentModel]);
+
 
     const [ downloadRef, setDownloadRef ] = useState("");
 
@@ -31,9 +52,9 @@ export default function BottomBar({canvas}) {
             <label htmlFor="model-select">Model Selection:</label>
             <select id='model-select' name='model-select' value={currentModel}
                 onChange={e => setCurrentModel(e.target.value)}>
-                    {modelList.map(modelname => {
+                    {modelList.map(modelObj => {
                         return (
-                            <option value={`${modelname}`}>{`${modelname}`}</option>
+                            <option value={`${modelObj._id}`}>{`${modelObj.username}`}</option>
                         );
                     })}
             </select>
