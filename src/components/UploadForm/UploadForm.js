@@ -17,7 +17,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { uploadedFileContext } from '../Upload/UploadWidget';
 import validateStreamerName from '../../services/validateStreamerName';
 
-const upload = new Upload({ apiKey: "free" });
+const upload = new Upload({ apiKey: `${process.env.REACT_APP_UPLOADIO_API_KEY}` });
 
 
 export default function UploadForm({fileUrl, admin=false}){
@@ -260,7 +260,7 @@ export default function UploadForm({fileUrl, admin=false}){
                 </div>
                 <div className="asset-brief-description">
                     <label htmlFor='asset-brief-description-label'>Brief description:</label>
-                    <Textarea name="asset-brief-description" id="asset-brief-description" cols="30" rows="4">
+                    <Textarea name="asset-brief-description" id="asset-brief-description" value={inputfileObj.briefDescription} cols="30" rows="4">
                     </Textarea>
                 </div>
                 {assetCat !== 'model' && assetCat !== 'face' ? 

@@ -2,9 +2,10 @@ import { Uploader } from "uploader";
 import { UploadButton } from "react-uploader";
 import { createContext, useState } from 'react';
 
+
 export const uploadedFileContext = createContext(null);
 
-const uploader = Uploader({ apiKey: "free" }); // Replace "free" with your API key.
+const uploader = Uploader({ apiKey: `${process.env.REACT_APP_UPLOADIO_API_KEY}` }); // Replace "free" with your API key.
 
 export default function UploadWidget({onUploadRender}){
     const [fileUrl, setFileUrl] = useState(null);
