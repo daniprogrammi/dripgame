@@ -1,0 +1,13 @@
+@use '../../style/' as *;
+@import "~react-image-gallery/styles/scss/image-gallery.scss";
+
+
+.image-gallery {
+    width: 100%;
+  }
+
+@media (max-width: 1024px) {
+  .image-gallery{
+    width: 100%;
+  }
+}

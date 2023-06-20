@@ -1,12 +1,13 @@
 import {useState, useContext, useEffect} from 'react';
 import { TextInput, Checkbox, Button, Group, Box } from '@mantine/core';
 import {useForm} from '@mantine/form';
+import createImageReport from '../../services/createImageReport';
 
-function ReportForm({imageId, user}) {
+function ReportForm({imageUrl, user}) {
     const form = useForm({
         initialValues: {
             reportingUser: user,
-            imageId: imageId,
+            imageUrl: imageUrl,
             reportReason: '',
             otherOwner: ''
         },
@@ -28,8 +29,9 @@ function ReportForm({imageId, user}) {
         }
     });
 
-    const submitForm = (values) => {
+    const submitForm = async (values) => {
         console.log(values);
+        await createImageReport(values.reportingUser, values.imageUrl, values.reportReason, values.otherOwner);
     }
 
     return (<Box maw={300} mx="auto">
@@ -54,6 +56,6 @@ function ReportForm({imageId, user}) {
     </Box>);
 }
 
-export default function Report({imageId, user}){
-    return (<ReportForm imageId={imageId} user={user}/>)
+export default function Report({imageUrl, user}){
+    return (<ReportForm imageUrl={imageUrl} user={user}/>)
 }

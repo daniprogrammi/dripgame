@@ -4,7 +4,7 @@ import "cropperjs/dist/cropper.css";
 import { Upload } from 'upload-js';
 import { useState, useEffect, useRef } from 'react';
 
-const upload = new Upload({ apiKey: "free" });
+const upload = new Upload({ apiKey: `${process.env.REACT_APP_UPLOADIO_API_KEY}` });
 
 export default function UploadCropper({fileUrl, sendData}){
     const [image, setImage] = useState(fileUrl);

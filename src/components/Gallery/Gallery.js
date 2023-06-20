@@ -1,4 +1,4 @@
-import { useEffect, useState} from "react";
+import { useEffect, useState, useContext } from "react";
 import GalleryImage from "./GalleryImage";
 import ImageGallery from 'react-image-gallery';
 import fetchAllAssets from "../../services/fetchAllAssets";
@@ -6,22 +6,16 @@ import './Gallery.scss';
 import Report from "../Report/Report";
 import { Button } from "@mantine/core";
 import { useAuth0 } from '@auth0/auth0-react';
+import fetchReportedAssets from "../../services/fetchReportedAssets";
+import fetchAssetById from "../../services/fetchAssetById";
+import isAdmin from "../Auth/isAdmin";
 
-function fetchAssets() {
-    return fetch('http://localhost:3005/assets', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }).then(data => data.json());
-}
-
-
-export default function Gallery() {
+export default function Gallery({assetStateToDisplay}) {
     const { user, isAuthenticated } = useAuth0();
+    const [admin, _] = useState(isAdmin(user));
     let [assets, setassetState] = useState([]);
     let [currentSlideIndex, setCurrSlideIndex] = useState(0);
-    let [reportImageId, setReportImageId] = useState(null);
+    let [reportImage, setReportImage] = useState("");
     const [visible, setVisible] = useState(false);
 
     let properties = {
@@ -46,7 +40,27 @@ export default function Gallery() {
 
     useEffect(()=> {
         (async () => {
-            let data = await fetchAllAssets(true);
+            let data;
+            // if (admin) {
+                if (assetStateToDisplay && assetStateToDisplay == 'reported') {
+                    data = await fetchReportedAssets();
+                    let reportedAssets = [];
+                    for (let reportedAsset of data){
+                        let asset = await fetchAssetById(reportedAsset.assetId);
+                        reportedAsset = { ...asset , ...reportedAsset };
+                        reportedAssets.push(reportedAsset);
+                    }
+                    data = reportedAssets;
+
+                }
+                else if (assetStateToDisplay && assetStateToDisplay == 'undecided'){
+                    data = await fetchAllAssets();
+                }
+            // }
+            else {
+                data = await fetchAllAssets(true);
+            }
+        
             let cleanedData = 
             data.filter(assetObj => assetObj.approved) // Data should be approved to be displayed
                 .map((obj) => {
@@ -67,29 +81,19 @@ export default function Gallery() {
         )();
     }, []);
 
+    useEffect(() => {
+        if (currentSlideIndex){
+            const currentAsset = assets[currentSlideIndex];
+            let currentUrl = currentAsset.original;
+            console.log(currentAsset.original);
+            setReportImage(currentUrl);
+        }
+    }, [currentSlideIndex])
+
     const setFlagPressed = () => {
         console.log(currentSlideIndex);
-        const currentAsset = assets[currentSlideIndex];
-        setReportImageId(currentAsset.id); // Context
-        // set this instead currentAsset.imageURL
         setVisible(true);
     }
-
-
-    const getAssetImages = () => {
-        let returnArray = [];
-        if (assets && assets.length > 0){
-            returnArray = assets.map((assetObj) => {
-                return ( 
-                <GalleryImage imgSource={assetObj.imageURL} 
-                    imgWidth={assetObj.width ? assetObj.width : 500} 
-                    imgHeight={assetObj.height ? assetObj.height: 500}>
-                </GalleryImage>
-                );
-            });
-        }
-        return returnArray;
-}
 
     const onSlideChange = (currentIndex) => {
         setVisible(false);
@@ -123,7 +127,7 @@ export default function Gallery() {
                     <div className="report-image-div">
                     <Button color="red" onClick={(event) => {setFlagPressed()}}> Report Image </Button>
                     <div className="report-image-form" style={visible ? {} : {'visibility':'hidden'}}>
-                        <Report imageId={reportImageId} user={user.nickname} style={{}}></Report>
+                        { reportImage && <Report imageUrl={reportImage} user={user.nickname} style={{}}></Report> }
                     </div>
                     </div>
                     )

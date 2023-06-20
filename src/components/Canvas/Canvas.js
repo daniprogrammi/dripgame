@@ -71,7 +71,12 @@ export default function Canvas() {
     const [canvas, setCanvasRef] = useCanvas(canvas => {
             let currentCanvas = loadCanvas(); 
             if (currentCanvas){
-                canvas.loadFromJSON(currentCanvas);
+                try {
+                    canvas.loadFromJSON(currentCanvas);
+                }
+                catch (e) {
+                    console.log(`Couldn't load canvas from cache (${e}`);
+                }
             }
                 canvas.on('drop', e => {
                     let event = e.e;

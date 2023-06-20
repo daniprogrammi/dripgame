@@ -2,12 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import approveAsset from "../../services/approveAsset";
 import rejectAsset from "../../services/rejectAsset";
 import fetchAllAssets from "../../services/fetchAllAssets";
+import fetchReportedAssets from "../../services/fetchReportedAssets";
 import UploadForm from "../UploadForm/UploadForm";
+import Gallery from "../Gallery/Gallery";
+import fetchAssetByUrl from "../../services/fetchAssetByUrl";
+import fetchAssetById from "../../services/fetchAssetById";
 
 
-export default function Decision(){
+export default function Decision({assetState='undecided'}){
     // todo: user has to be authd, has to be on whitelist to successfully request unapproved assets
-    const [undecidedAssets, setUndecidedAssets] = useState([]);
+    const [assetsToReturn, setAssetsToReturn] = useState([]);
     const inFocusAsset = useRef(null); //Maybe even useContext???? -- will give us the assetObj and not the element
     
     const [assetExtra, setAssetExtra] = useState({});
@@ -37,19 +41,32 @@ export default function Decision(){
     }
 
 
-    useEffect(() => {
-        (async () => {
-            let assets = await fetchAllAssets();
-            setUndecidedAssets(assets); // Are these all undecided
-            console.log(assets);
-            }
-         )();
-     }, []);
+    // useEffect(() => {
+    //     (async () => {
+    //         let assets;
+    //         if (assetState === 'undecided') {
+    //             assets = await fetchAllAssets();
+    //         }
+    //         else if (assetState === 'reported') {
+    //            assets = await fetchReportedAssets();
+    //            let reportedAssets = [];
+    //            for (let reportedAsset of assets){
+    //                 let asset = await fetchAssetById(reportedAsset.assetId);
+    //                 reportedAsset = { ...asset , ...reportedAsset };
+    //                 reportedAssets.push(reportedAsset);
+    //            }
+    //            assets = reportedAssets;
+    //         }
+    //         setAssetsToReturn(assets);
+    //         console.log(assets);
+    //         }
+    //      )();
+    //  }, []);
 
     return (
         <div className="decision-div">
-            {undecidedAssets && 
-            undecidedAssets.map(assetObj => {
+            {/* {assetsToReturn && 
+            assetsToReturn.map(assetObj => {
                    return (
                    <div className="decision-img focused-img">
                    <img id={assetObj._id}
@@ -58,7 +75,7 @@ export default function Decision(){
                     width={500}
                     height={500}
                      />
-                     {/* Maybe include form to potentially update asset info */}
+                     {/* Maybe include form to potentially update asset info 
                      {assetObj.icon ? 
                         (
                             <div className="icon-img">
@@ -72,10 +89,12 @@ export default function Decision(){
                         )
                     }
                      </div>);
-                    })}
-            <button className="accept-img-btn btn btn-primary" onClick={(event) => acceptImageCallback(event.target.id)}>Accept</button>
-            <button className="reject-img-btn btn btn-primary" onClick={(event) => rejectImageCallback(event.target.id)}>Reject</button>
-           <UploadForm></UploadForm>
+                    })} */}
+            <button className="accept-img-btn btn btn-primary" onClick={()=>console.log("Accept")}>Accept</button>
+            <button className="reject-img-btn btn btn-primary" onClick={()=>console.log("Reject")}>Reject</button>
+            {/* Get target id by what image is currently active in the Gallery  */}
+            <Gallery assetStateToDisplay={assetState}></Gallery>
+            <UploadForm></UploadForm>
         </div>
     );
 }

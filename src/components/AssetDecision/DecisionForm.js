@@ -14,7 +14,7 @@ import uploadAsset from '../../services/uploadAsset';
 
 import { useAuth0 } from '@auth0/auth0-react';
 
-const upload = new Upload({ apiKey: "free" });
+const upload = new Upload({ apiKey: `${process.env.REACT_APP_UPLOADIO_API_KEY}` });
 
 
 export default function DecisionForm({fileUrl, admin=false}){
