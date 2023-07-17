@@ -2,6 +2,9 @@
   "name": "dripgame",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://github.com/Danicodes/dripgame",
+  "email": "email@email.email",
+  "license": "MIT",
   "dependencies": {
     "@auth0/auth0-react": "^1.10.2",
     "@emotion/react": "^11.10.4",
